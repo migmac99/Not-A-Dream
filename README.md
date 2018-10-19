@@ -1,3 +1,3 @@
 # Not-A-Dream
 
-https://insiders.liveshare.vsengsaas.visualstudio.com/join?0E4025E6F1250031BFCEE425170EC58CACD4
+https://insiders.liveshare.vsengsaas.visualstudio.com/join?3834AF49A3FC4876FCC278C9221829E29593
