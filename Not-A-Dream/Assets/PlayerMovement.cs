@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
 
+	Public float xSp
+
 	// Use this for initialization
 	void Start () {
 		
