@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/not-a-dream.unity
+- path: Assets/Scenes/not-a-dream.unity
   isLoaded: 1
   isActive: 1
