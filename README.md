@@ -3,7 +3,7 @@
 
 #Todo list
 
-- [ ] Camera Movement
+- [x] Camera Movement
 - [ ] Player animations
 - [ ] Enemy animations
 - [ ] Map Design
