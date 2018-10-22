@@ -114,6 +114,10 @@
     > Make sure to have each button/animation in a separate file
 
     - [ ] Main_Menu
+<<<<<<< HEAD
+=======
+    > Make sure to have each button/animation in a separate file
+>>>>>>> 073a4700b94ee0f031d802184b0392aa9df6bb94
     ```
     - Play
     - Settings
