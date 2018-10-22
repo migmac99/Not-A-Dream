@@ -10,7 +10,10 @@ public class PlayerMovement : MonoBehaviour {
 
 	private float moveInput;
 	private Rigidbody2D rb;
-	
+	private float jumpTimeCounter;
+	public float jumpTime;
+	private bool isJmuping;
+
 	private bool facingRight = true;
 	private bool isGrounded;
 	public Transform groundCheck;
@@ -27,13 +30,13 @@ public class PlayerMovement : MonoBehaviour {
 		rb = GetComponent<Rigidbody2D> ();
 	}
 
-	void Start(){
+	void Start () {
 		extraJumps = extraJumpsValue;
 	}
 
-
 	// Update is called once per frame
 	void Update () {
+		print(isJmuping);
 		KeyboardInput ();
 
 		if (isGrounded) {
@@ -56,12 +59,32 @@ public class PlayerMovement : MonoBehaviour {
 		if (Input.GetKey (KeyCode.S)) {
 
 		}
+		if(isGrounded && Input.GetKeyDown (KeyCode.Space))
+		{
+			isJmuping = true;
+			jumpTimeCounter = jumpTime;
+		}
 
 		if (Input.GetKeyDown (KeyCode.Space) && extraJumps > 0) {
 			rb.velocity = Vector2.up * JumpForce;
 			extraJumps -= 1;
 		} else if (Input.GetKeyDown (KeyCode.Space) && extraJumps == 0 && isGrounded) {
 			rb.velocity = Vector2.up * JumpForce;
+		}
+
+		if (Input.GetKey (KeyCode.Space) && isJmuping == true) {
+			if (jumpTimeCounter > 0) {
+				rb.velocity = Vector2.up * JumpForce;
+				jumpTimeCounter -= Time.deltaTime;
+			} else {
+				isJmuping = false;
+
+			}
+
+		}
+
+		if (Input.GetKeyUp (KeyCode.Space)) {
+			isJmuping = false;
 		}
 
 	}
@@ -78,6 +101,7 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	void FixedUpdate () {
+		rb.velocity = new Vector2 (moveInput * Speed, rb.velocity.y);
 
 		isGrounded = Physics2D.OverlapCircle (groundCheck.position, checkRadius, whatIsGround);
 
