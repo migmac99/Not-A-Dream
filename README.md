@@ -1,7 +1,7 @@
 # Not-A-Dream
 
 
-##Todo list
+## Todo list
 
 - [ ] Camera Movement
 - [ ] Player animations
@@ -19,7 +19,7 @@
 
 ================================================================================
  
-##Needed Animations
+## Needed Animations
 
 - [ ] PLAYER
 
@@ -113,7 +113,7 @@
 - [ ] Menu
 
     - [ ] Main_Menu
-    <span style=“color:green;”> Make sure to have each button/animation in a separate file</span> 
+    > Make sure to have each button/animation in a separate file
     ```
     - Play
     - Settings
