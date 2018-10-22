@@ -125,6 +125,7 @@
     - [ ] Settings_Menu
 
     > If we have time we will make:
+    
     ```
     - Sound adjustment option; 
     - Resolution adjustment option;
