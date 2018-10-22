@@ -1,7 +1,7 @@
 # Not-A-Dream
 
 
-##Todo list
+## Todo list
 
 - [ ] Camera Movement
 - [ ] Player animations
@@ -17,9 +17,9 @@
 - [ ] Sound
 - [ ] Menus
 
-================================================================================
+--------------------------------------------------------------------------------
  
-##Needed Animations
+## Needed Animations
 
 - [ ] PLAYER
 
@@ -111,39 +111,39 @@
   --------------------------------------------------------------------------------
 
 - [ ] Menu
+    > Make sure to have each button/animation in a separate file
 
     - [ ] Main_Menu
-    <span style=“color:green;”> Make sure to have each button/animation in a separate file</span> 
     ```
     - Play
     - Settings
     - Exit
     ```
-
+--------------------------
     - [ ] Settings_Menu
     > If we have time we will make:
     ```
     - Sound adjustment option; 
     - Resolution adjustment option;
     ```
-
+--------------------------
     - [ ] Pause_Menu
-    > Make sure to have each button/animation in a separate file
+
     ```
     - Resume
     - Settings
     - Exit
     ```
-
+--------------------------
     - [ ] Win_Menu
-    > Make sure to have each button/animation in a separate file    
+
     ```
     - Main Menu
     - Exit
     ```
-
+--------------------------
     - [ ] Loss_Menu
-    > Make sure to have each button/animation in a separate file
+
     ```
     - Main Menu
     - Exit
