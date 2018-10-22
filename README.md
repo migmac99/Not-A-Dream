@@ -23,53 +23,53 @@
 
 - [ ] PLAYER
 
-        - [ ] Player_Idle
-        - [ ] Player_Jump
-        - [ ] Player_Walk
-        - [ ] Player_Run
-        - [ ] Player_Attack
-        - [ ] Player_Hurt
-        - [ ] Player_Death
+    - [ ] Player_Idle
+    - [ ] Player_Jump
+    - [ ] Player_Walk
+    - [ ] Player_Run
+    - [ ] Player_Attack
+    - [ ] Player_Hurt
+    - [ ] Player_Death
 
 
 - [ ] ENEMY_1
 
-        - [ ] Enemy_1_Idle
-        - [ ] Enemy_1_Jump
-        - [ ] Enemy_1_Walk
-        - [ ] Enemy_1_Attack
-        - [ ] Enemy_1_Hurt
-        - [ ] Enemy_1_Death
+    - [ ] Enemy_1_Idle
+    - [ ] Enemy_1_Jump
+    - [ ] Enemy_1_Walk
+    - [ ] Enemy_1_Attack
+    - [ ] Enemy_1_Hurt
+    - [ ] Enemy_1_Death
 
 
 - [ ] ENEMY_2
 
-        - [ ] Enemy_2_Idle
-        - [ ] Enemy_2_Jump
-        - [ ] Enemy_2_Walk
-        - [ ] Enemy_2_Attack
-        - [ ] Enemy_2_Hurt
-        - [ ] Enemy_2_Death
+    - [ ] Enemy_2_Idle
+    - [ ] Enemy_2_Jump
+    - [ ] Enemy_2_Walk
+    - [ ] Enemy_2_Attack
+    - [ ] Enemy_2_Hurt
+    - [ ] Enemy_2_Death
  
 
 - [ ] ENEMY_3
 
-        - [ ] Enemy_3_Idle
-        - [ ] Enemy_3_Jump
-        - [ ] Enemy_3_Walk
-        - [ ] Enemy_3_Attack
-        - [ ] Enemy_3_Hurt
-        - [ ] Enemy_3_Death
+    - [ ] Enemy_3_Idle
+    - [ ] Enemy_3_Jump
+    - [ ] Enemy_3_Walk
+    - [ ] Enemy_3_Attack
+    - [ ] Enemy_3_Hurt
+    - [ ] Enemy_3_Death
 
 
 - [ ] ENEMY_4
 
-        - [ ] Enemy_4_Idle
-        - [ ] Enemy_4_Jump
-        - [ ] Enemy_4_Walk
-        - [ ] Enemy_4_Attack
-        - [ ] Enemy_4_Hurt
-        - [ ] Enemy_4_Death
+    - [ ] Enemy_4_Idle
+    - [ ] Enemy_4_Jump
+    - [ ] Enemy_4_Walk
+    - [ ] Enemy_4_Attack
+    - [ ] Enemy_4_Hurt
+    - [ ] Enemy_4_Death
 
 
 
@@ -83,6 +83,6 @@
      3 --> 1
     ```
 
-        - [ ] Scene_1 
-        - [ ] Scene_2
-        - [ ] Scene_3
+    - [ ] Scene_1 
+    - [ ] Scene_2
+    - [ ] Scene_3
