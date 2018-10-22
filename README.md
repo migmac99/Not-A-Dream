@@ -92,7 +92,7 @@
 
 --------------------------------------------------------------------------------
 
-- [ ] Assets
+- [ ] ASSETS
 
     - [ ] Puzzle_Assets
         ```
@@ -107,10 +107,10 @@
         If we decide to have several weapons for the player, we will need weapon animations
         ```
         - [ ] Weapon_Asset_1
-  
-  --------------------------------------------------------------------------------
+        
+--------------------------------------------------------------------------------
 
-- [ ] Menu
+- [ ] MENU
 
     > Make sure to have each button/animation in a separate file
 
@@ -125,7 +125,7 @@
     - [ ] Settings_Menu
 
     > If we have time we will make:
-    
+
     ```
     - Sound adjustment option; 
     - Resolution adjustment option;
@@ -155,3 +155,5 @@
     - Main Menu
     - Exit
     ```
+
+--------------------------------------------------------------------------------
