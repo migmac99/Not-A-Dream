@@ -111,6 +111,7 @@
   --------------------------------------------------------------------------------
 
 - [ ] Menu
+
     > Make sure to have each button/animation in a separate file
 
     - [ ] Main_Menu
@@ -119,14 +120,17 @@
     - Settings
     - Exit
     ```
---------------------------
+
+
     - [ ] Settings_Menu
+
     > If we have time we will make:
     ```
     - Sound adjustment option; 
     - Resolution adjustment option;
     ```
---------------------------
+
+
     - [ ] Pause_Menu
 
     ```
@@ -134,14 +138,16 @@
     - Settings
     - Exit
     ```
---------------------------
+
+
     - [ ] Win_Menu
 
     ```
     - Main Menu
     - Exit
     ```
---------------------------
+
+
     - [ ] Loss_Menu
 
     ```
