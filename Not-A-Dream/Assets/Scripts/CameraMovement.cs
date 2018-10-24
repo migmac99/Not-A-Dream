@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour {
 
-	private Vector2 velocity; //required for calculations
+	private Vector2 velocity; //Required for smoothing calculations
 
 	public float timer_y; //Timer for camera smoothing
 	public float timer_x;
@@ -17,25 +17,14 @@ public class CameraMovement : MonoBehaviour {
 	private PlayerMovement playerMovement;
 
 	void Awake () {
-		playerMovement = GetComponent<PlayerMovement> ();
-	}
-
-	void Start () {
-		player = GameObject.FindGameObjectWithTag ("Player");
-	}
-
-	void Update () {
-		//floor = GameObject.Find (playerMovement.floorTag.ToString());
-		floor = playerMovement.floorTag;
+		player = GameObject.FindGameObjectWithTag ("Player"); // Referencing to the PlayerMovement script inside the Player object
 	}
 
 	void FixedUpdate () {
-
+		// Math for the smoothing camera movement until it hits the desired target
 		float position_x = Mathf.SmoothDamp (transform.position.x, player.transform.position.x, ref velocity.x, timer_x);
 		float position_y = Mathf.SmoothDamp (transform.position.y, (floor.transform.position.y + floorMargin), ref velocity.y, timer_y);
-
 		transform.position = new Vector3 (position_x, position_y, -1f);
-
 	}
 
 }
