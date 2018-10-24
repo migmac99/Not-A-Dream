@@ -32,14 +32,14 @@ public class PlayerMovement : MonoBehaviour {
 		animator = GetComponent<Animator> ();
 		rb = GetComponent<Rigidbody2D> ();
 
-		mainCamera = GameObject.FindGameObjectWithTag ("MainCamera"); // Referencing to the CameraMovement script inside the Main_Camera object with a GameObject tag
+		mainCamera = GameObject.FindGameObjectWithTag ("MainCamera"); //Referencing to the CameraMovement script inside the Main_Camera object with a GameObject tag
 	}
 
 	void Start () {
 		extraJumps = extraJumpsValue;
 	}
 
-	// Update is called once per frame
+	//Update is called once per frame
 	void Update () {
 		KeyboardInput ();
 
@@ -95,7 +95,7 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D (Collider2D other) {
-		mainCamera.GetComponent<CameraMovement> ().floor = other.gameObject; // Defining the floor variable inside CameraMovement script in the mainCamera object to the object that triggered this collision (the last floor the player standed on)
+		mainCamera.GetComponent<CameraMovement> ().floor = other.gameObject; //Defining the floor variable inside CameraMovement script in the mainCamera object to the object that triggered this collision (the last floor the player standed on)
 	}
 
 	void Flip () { //Flip the character sprite
