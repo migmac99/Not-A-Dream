@@ -43,12 +43,11 @@ public class PlayerMovement : MonoBehaviour {
 	void Update () {
 		KeyboardInput ();
 
-		if (isGrounded) { 
+		if (isGrounded) {
 			extraJumps = extraJumpsValue;
 			animator.SetBool ("playerJump", false);
 		} else {
 			animator.SetBool ("playerJump", true);
-			return;
 		}
 	}
 
@@ -57,20 +56,18 @@ public class PlayerMovement : MonoBehaviour {
 		if (Input.GetKey (KeyCode.A) || Input.GetKey (KeyCode.D)) {
 			animator.SetBool ("playerRun", true); //Plays the PlayerRun animation
 			this.transform.position += new Vector3 (Speed, 0, 0); //Movement using speed value
-
-			if (Input.GetKey (KeyCode.A)) {
-				Speed = -Math.Abs (Speed); //Sets Speed to the negative value of its absolute value (result is always negative)
-			} else if (Input.GetKey (KeyCode.D)) {
-				Speed = Math.Abs (Speed); //Sets Speed to the positive value of its absolute value (result is always positive)
-			}
+		}
+		if (Input.GetKey (KeyCode.A)) {
+			Speed = -Math.Abs (Speed); //Sets Speed to the negative value of its absolute value (result is always negative)
+		} else if (Input.GetKey (KeyCode.D)) {
+			Speed = Math.Abs (Speed); //Sets Speed to the positive value of its absolute value (result is always positive)
 		} else {
 			animator.SetBool ("playerRun", false); //Stops playing the PlayerRun animation
-			return;
 		}
 
 		if (Input.GetKeyDown (KeyCode.Space)) {
 			if (extraJumps > 0) { //Double Jump Mechanic
-				rb.velocity = Vector2.up * JumpForce;
+				rb.velocity = Vector2.up * JumpForce; //Smooth Jump
 				extraJumps -= 1;
 			}
 			if (isGrounded) {
@@ -79,13 +76,12 @@ public class PlayerMovement : MonoBehaviour {
 			}
 		}
 		if (Input.GetKey (KeyCode.Space)) {
-			if (isJumping == true) {
+			if (isJumping) {
 				if (jumpTimeCounter > 0) {
 					rb.velocity = Vector2.up * JumpForce; //Smooth Jump
 					jumpTimeCounter -= Time.deltaTime;
 				} else {
 					isJumping = false;
-					return;
 				}
 			}
 		}
@@ -106,13 +102,11 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	void FixedUpdate () {
-		rb.velocity = new Vector2 (moveInput * Speed, rb.velocity.y);
+		rb.velocity = new Vector2 (moveInput * Speed, rb.velocity.y); //Jump speed mechanic for smooth jump
 
 		isGrounded = Physics2D.OverlapCircle (groundCheck.position, checkRadius, whatIsGround); //Check when player is touching the floor
 
-		if (facingRight == false && Speed > 0) {
-			Flip ();
-		} else if (facingRight == true && Speed < 0) {
+		if ((!facingRight && Speed > 0) || (facingRight && Speed < 0)){
 			Flip ();
 		}
 	}
