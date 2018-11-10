@@ -167,46 +167,46 @@
     - [ ] Button_Select_Sound (used in menu)
     - [ ] Button_Sound (used in game and in menu)
     - [ ] Pressure_Plate_Sound
-    
+    ---------------------------------------------
     - [ ] Player_Attack_Sound
     - [ ] Player_Hurt_Sound
     - [ ] Player_Die_Sound
     - [ ] Player_Jump_Sound
     - [ ] Player_Run_Sound
-    
+    ---------------------------------------------
     - [ ] Enemy_1_Attack_1_Sound
     - [ ] Enemy_1_Attack_2_Sound
     - [ ] Enemy_1_Hurt_Sound
     - [ ] Enemy_1_Die_Sound
-    
+    ---------------------------------------------
     - [ ] Enemy_2_Attack_1_Sound
     - [ ] Enemy_2_Attack_2_Sound
     - [ ] Enemy_2_Hurt_Sound
     - [ ] Enemy_2_Die_Sound
-    
+    ---------------------------------------------
     - [ ] Enemy_3_Attack_1_Sound
     - [ ] Enemy_3_Attack_2_Sound
     - [ ] Enemy_3_Hurt_Sound
     - [ ] Enemy_3_Die_Sound
-
+    ---------------------------------------------
     - [ ] Rune_1_Use_Sound
     - [ ] Rune_2_Use_Sound
     - [ ] Rune_3_Use_Sound
     - [ ] Rune_4_Use_Sound
     - [ ] Rune_5_Use_Sound
-    
+    ---------------------------------------------
     - [ ] Rolling_Boulder_Sound
-    
+    ---------------------------------------------
     - [ ] Rune_1_Dialogue
     - [ ] Rune_2_Dialogue
     - [ ] Rune_3_Dialogue
     - [ ] Rune_4_Dialogue
     - [ ] Rune_5_Dialogue
-    
+    ---------------------------------------------
     - [ ] Enemy_1_Dialogue
     - [ ] Enemy_2_Dialogue
     - [ ] Enemy_3_Dialogue
-    
+    ---------------------------------------------
     - [ ] Enemy_1_Death_Dialogue
     - [ ] Enemy_2_Death_Dialogue
     - [ ] Enemy_3_Death_Dialogue
