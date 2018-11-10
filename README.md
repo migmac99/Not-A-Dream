@@ -4,6 +4,9 @@
 ## Todo list
 
 - [x] Camera Movement
+- [x] Rune Movement
+- [x] Rune Collection
+- [ ] Rune Powers
 - [ ] Player animations
 - [ ] Enemy animations
 - [ ] Map Design
