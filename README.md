@@ -36,6 +36,44 @@
 
 --------------------------------------------------------------------------------
 
+- [ ] Runes
+    ```
+    Rune 1 is Neon Blue
+    ```
+    - [ ] Rune_1_Idle
+    - [ ] Rune_1_Activated (glow and become slightly larger so that the player sees it was activated)
+    - [ ] Rune_1_Power (animation of the player using the power)
+    ---------------------------------------------
+    ```
+    Rune 2 is Purple
+    ```
+    - [ ] Rune_2_Idle
+    - [ ] Rune_2_Activated (glow and become slightly larger so that the player sees it was activated)
+    - [ ] Rune_2_Power (animation of the player using the power)
+    ---------------------------------------------
+    ```
+    Rune 3 is Yellow
+    ```
+    - [ ] Rune_3_Idle
+    - [ ] Rune_3_Activated (glow and become slightly larger so that the player sees it was activated)
+    - [ ] Rune_3_Power (animation of the player using the power)
+    ---------------------------------------------
+    ```
+    Rune 4 is Black/white
+    ```
+    - [ ] Rune_4_Idle
+    - [ ] Rune_4_Activated (glow and become slightly larger so that the player sees it was activated)
+    - [ ] Rune_4_Power (animation of the player using the power)
+    ---------------------------------------------
+    ```
+    Rune 5 is Red/Orange
+    ```
+    - [ ] Rune_5_Idle
+    - [ ] Rune_5_Activated (glow and become slightly larger so that the player sees it was activated)
+    - [ ] Rune_5_Power (animation of the player using the power)
+
+--------------------------------------------------------------------------------
+
 - [ ] ENEMY_1
 
     - [ ] Enemy_1_Idle
@@ -112,7 +150,6 @@
      Eimantas and Mike will do that transition
      ```
      - [ ] Large_Door (open animation)
-        
         
 --------------------------------------------------------------------------------
 
@@ -213,6 +250,5 @@
     - [ ] Enemy_1_Death_Dialogue
     - [ ] Enemy_2_Death_Dialogue
     - [ ] Enemy_3_Death_Dialogue
-    
     
 --------------------------------------------------------------------------------
