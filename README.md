@@ -93,20 +93,26 @@
 --------------------------------------------------------------------------------
 
 - [ ] ASSETS
-
-    - [ ] Puzzle_Assets
-        ```
-        Yet to be determined but we do know that at least there are going to be 2 puzzles
-        ```
-        - [ ] Puzzle_Asset_1
-        - [ ] Puzzle_Asset_2
-
-    - [ ] Weapon_Assets
-
-        ```
-        If we decide to have several weapons for the player, we will need weapon animations
-        ```
-        - [ ] Weapon_Asset_1
+    
+     - [ ] Button
+     
+     - [ ] Pressure_Plate
+     
+     ```
+     The elevators will be the same but with different rune symbols on top
+     We will need animated doors (open/close)
+     We will also need an animation of the elevator going into the ground (with doors closed)
+     ```
+     - [ ] Elevator_1 
+     - [ ] Elevator_2
+     - [ ] Elevator_3 
+     - [ ] Elevator_4
+     - [ ] Elevator_5
+     
+     - [ ] Rolling_Boulder
+     
+     - [ ] Large_Door (open animation) [into the next scene / change of background]
+        
         
 --------------------------------------------------------------------------------
 
@@ -156,4 +162,12 @@
     - Exit
     ```
 
+--------------------------------------------------------------------------------
+
+- [ ] Sounds
+
+    - [ ] Button_Sound
+    - [ ] Pressure_Plate_Sound
+    
+    
 --------------------------------------------------------------------------------
