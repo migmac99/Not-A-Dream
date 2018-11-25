@@ -5,57 +5,61 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
 
-	public float Speed;
-	public float JumpForce = 0f;
+	public GameObject Player;
 
-	private float moveInput;
 	private Rigidbody2D rb;
-	private float jumpTimeCounter;
-	public float jumpTime;
-	private bool isJumping;
 	private Animator animator;
+	private GameObject main_camera;
+	private CameraMovement cameraMovement;
 
-	private bool facingRight = true;
-	private bool isGrounded; //Check if player is touching the floor
+	public LayerMask whatIsGround;
 	public Transform groundCheck;
 	public float checkRadius;
-	public LayerMask whatIsGround;
+	private float moveInput;
 
-	private int extraJumps;
-	public int extraJumpsValue;
-	public float jumpSpeed;
+	private bool facingRight = true;
 
-	public GameObject mainCamera;
-	private CameraMovement cameraMovement;
+	public float Speed;
+
+	public float JumpForce = 0f;
+	public bool hasJumped;
+
+	public bool isGrounded; //Check if player is touching the floor
 
 	void Awake () {
 		animator = GetComponent<Animator> ();
 		rb = GetComponent<Rigidbody2D> ();
 
-		mainCamera = GameObject.FindGameObjectWithTag ("MainCamera"); //Referencing to the CameraMovement script inside the Main_Camera object with a GameObject tag
+		main_camera = GameObject.FindGameObjectWithTag ("MainCamera"); //Referencing to the Main_Camera object with a GameObject tag
 	}
 
-	void Start () {
-		extraJumps = extraJumpsValue;
-	}
-
-	//Update is called once per frame
 	void Update () {
-		KeyboardInput ();
+		//Player can move if he is alive and is not being hurt
+		if ((main_camera.GetComponent<GameManager> ().playerHealth > 0) && (!main_camera.GetComponent<GameManager> ().animator.GetCurrentAnimatorStateInfo (0).IsName ("Hurt"))) {
+			KeyboardInput ();
+		}
+
+		isGrounded = Physics2D.OverlapCircle (groundCheck.position, checkRadius, whatIsGround); //Check when player is touching the floor
 
 		if (isGrounded) {
-			extraJumps = extraJumpsValue;
+			hasJumped = false;
 			animator.SetBool ("playerJump", false);
 		} else {
 			animator.SetBool ("playerJump", true);
 		}
+		if ((!facingRight && Speed > 0) || (facingRight && Speed < 0)) {
+			Flip ();
+		}
+	}
+
+	void FixedUpdate () {
+		rb.velocity = new Vector2 (moveInput * Speed, rb.velocity.y); //Jump speed mechanic for smooth jump
 	}
 
 	void KeyboardInput () {
-
 		if (Input.GetKey (KeyCode.A) || Input.GetKey (KeyCode.D)) {
 			animator.SetBool ("playerRun", true); //Plays the PlayerRun animation
-			this.transform.position += new Vector3 (Speed, 0, 0); //Movement using speed value
+			this.transform.position += new Vector3 (Speed * Time.deltaTime, 0, 0); //Movement using speed value
 		}
 		if (Input.GetKey (KeyCode.A)) {
 			Speed = -Math.Abs (Speed); //Sets Speed to the negative value of its absolute value (result is always negative)
@@ -64,34 +68,11 @@ public class PlayerMovement : MonoBehaviour {
 		} else {
 			animator.SetBool ("playerRun", false); //Stops playing the PlayerRun animation
 		}
-
 		if (Input.GetKeyDown (KeyCode.Space)) {
-			if (extraJumps > 0) { //Double Jump Mechanic
-				rb.velocity = Vector2.up * JumpForce; //Smooth Jump
-				extraJumps -= 1;
-			}
 			if (isGrounded) {
-				isJumping = true;
-				jumpTimeCounter = jumpTime;
+				rb.velocity = Vector2.up * JumpForce; //Simple single jump mechanic
 			}
 		}
-		if (Input.GetKey (KeyCode.Space)) {
-			if (isJumping) {
-				if (jumpTimeCounter > 0) {
-					rb.velocity = Vector2.up * JumpForce; //Smooth Jump
-					jumpTimeCounter -= Time.deltaTime;
-				} else {
-					isJumping = false;
-				}
-			}
-		}
-		if (Input.GetKeyUp (KeyCode.Space)) {
-			isJumping = false;
-		}
-	}
-
-	void OnTriggerEnter2D (Collider2D other) {
-		mainCamera.GetComponent<CameraMovement> ().floor = other.gameObject; //Defining the floor variable inside CameraMovement script in the mainCamera object to the object that triggered this collision (the last floor the player standed on)
 	}
 
 	void Flip () { //Flip the character sprite
@@ -101,14 +82,9 @@ public class PlayerMovement : MonoBehaviour {
 		transform.localScale = Scaler;
 	}
 
-	void FixedUpdate () {
-		rb.velocity = new Vector2 (moveInput * Speed, rb.velocity.y); //Jump speed mechanic for smooth jump
-
-		isGrounded = Physics2D.OverlapCircle (groundCheck.position, checkRadius, whatIsGround); //Check when player is touching the floor
-
-		if ((!facingRight && Speed > 0) || (facingRight && Speed < 0)){
-			Flip ();
+	void OnTriggerEnter2D (Collider2D other) {
+		if (other.gameObject.tag == "Floor") {
+			main_camera.GetComponent<CameraMovement> ().floor = other.gameObject; //Defining the floor variable inside CameraMovement script in the mainCamera object to the object that triggered this collision (the last floor the player standed on)
 		}
 	}
-
 }
