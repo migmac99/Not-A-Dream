@@ -29,7 +29,7 @@ public class Firstenemy : MonoBehaviour {
 	public float enemy_step_back_timer_x; //Timer for the step back after Attack_2 is done
 	public float enemy_timer_x;
 
-	private float dist; //Distance between the player and the enemy (positive if player is on the right of enemy and negative)
+	public float dist; //Distance between the player and the enemy (positive if player is on the right of enemy and negative)
 	private float position_x_enemy;
 	private float position_y_enemy;
 
@@ -242,12 +242,13 @@ public class Firstenemy : MonoBehaviour {
 		}
 		if (Attack_State == "Step_Back") {
 			target_spriteRenderer.enabled = false;
+			dist = player.transform.position.x - transform.position.x;
 
 			if (dist > 0) { //If player is to the right of enemy
-				position_x_enemy = Mathf.SmoothDamp (transform.position.x, transform.position.x - Math.Abs (step_back_value_x), ref velocity.x, enemy_step_back_timer_x);
+				position_x_enemy = Mathf.SmoothDamp (transform.position.x, transform.position.x - step_back_value_x, ref velocity.x, enemy_step_back_timer_x);
 				position_y_enemy = Mathf.SmoothDamp (transform.position.y, transform.position.y, ref velocity.y, 0);
 			} else if (dist < 0) { //If player is to the left of enemy
-				position_x_enemy = Mathf.SmoothDamp (transform.position.x, transform.position.x + Math.Abs (step_back_value_x), ref velocity.x, enemy_step_back_timer_x);
+				position_x_enemy = Mathf.SmoothDamp (transform.position.x, transform.position.x + step_back_value_x, ref velocity.x, enemy_step_back_timer_x);
 				position_y_enemy = Mathf.SmoothDamp (transform.position.y, transform.position.y, ref velocity.y, 0);
 			}
 			transform.position = new Vector3 (position_x_enemy, position_y_enemy, 0);
@@ -271,7 +272,7 @@ public class Firstenemy : MonoBehaviour {
 ////   [x]							Add sprite for target area							////
 ////   [x]						After landing do damage to player						////
 ////   [x]		After damaging the player, enemy goes back a few "steps"?				////
-////   []	Step back to adequate position left or right depending on player pos		////
+////   [x]	Step back to adequate position left or right depending on player pos		////
 ////   []						Refine timings for good fight							////
 ////																					////
 ////////////////////////////////////////////////////////////////////////////////////////////
