@@ -26,13 +26,13 @@
 
 - [ ] PLAYER
 
-    - [ ] Player_Idle
-    - [ ] Player_Jump
-    - [ ] Player_Walk
+    - [x] Player_Idle
+    - [x] Player_Jump
+    - [x] Player_Walk
     - [ ] Player_Run
     - [ ] Player_Attack
-    - [ ] Player_Hurt
-    - [ ] Player_Death
+    - [x] Player_Hurt
+    - [x] Player_Death
 
 --------------------------------------------------------------------------------
 
@@ -119,7 +119,7 @@
      3 --> 1
     ```
 
-    - [ ] Scene_1 
+    - [x] Scene_1 
     - [ ] Scene_2
     - [ ] Scene_3
 
