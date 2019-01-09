@@ -7,8 +7,6 @@ public class PassageDoor : MonoBehaviour {
 	[Header ("╔═══════════════[Referencing]══════════════════════════════════════════════════════════════════════════════════════════")]
 	[Space (10)]
 	public GameObject player;
-	[Space (10)]
-	public BoxCollider2D DoorCollider;
 
 	void Update () {
 		if (player.GetComponent<RunePowers> ().Rune_3_State == "In_Progress") {

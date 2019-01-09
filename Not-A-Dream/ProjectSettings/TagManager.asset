@@ -7,6 +7,10 @@ TagManager:
   - Floor
   - Destroy
   - Enemy_1
+  - Arena_Floor
+  - Sky_Limit
+  - Arena_Wall_L
+  - Arena_Wall_R
   - Arena_Wall
   layers:
   - Default

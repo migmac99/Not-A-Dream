@@ -18,6 +18,7 @@ public class Firstenemy : MonoBehaviour {
 	public GameObject player;
 	public GameObject main_camera;
 	[Space (10)]
+	public GameObject Sky_Limit;
 	public GameObject floor;
 	public Transform groundDetect; //Empty object from where the raycast is shot
 	[Space (10)]
@@ -45,11 +46,28 @@ public class Firstenemy : MonoBehaviour {
 
 	[Header ("╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════")]
 	[Space (20)]
+	[Header ("╔═════════════════[Attack Settings]════════════════════════════════════════════════════════════════════════════════════════════")]
+	[Space (10)]
+
+	[Range (0, 20)] public int Attack_1_Min_Frequency;
+	[Range (0, 20)] public int Attack_1_Max_Frequency;
+	[Space (10)]
+	[Range (0, 20)] public int Attack_2_Min_Frequency;
+	[Range (0, 20)] public int Attack_2_Max_Frequency;
+	[Space (10)]
+
+	[HideInInspector]
+	public bool hasChosenTime_1 = false;
+	[HideInInspector]
+	public bool hasChosenTime_2 = false;
+
+	[Header ("╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════")]
+	[Space (20)]
 	[Header ("╔═════════════════[Attack Damage]════════════════════════════════════════════════════════════════════════════════════════════")]
 	[Space (10)]
 
-	public float Attack_1_damage; //Damage value for Attack_1 (this controlls other scripts)
-	public float Attack_2_damage; //Damage value for Attack_2 (this controlls other scripts)
+	[Range (0, 100)] public float Attack_1_damage; //Damage value for Attack_1 (this controlls other scripts)
+	[Range (0, 100)] public float Attack_2_damage; //Damage value for Attack_2 (this controlls other scripts)
 
 	[Header ("╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════")]
 	[Space (20)]
@@ -89,6 +107,8 @@ public class Firstenemy : MonoBehaviour {
 
 	public bool isTouching_Player; //Check if enemy is touching the player
 	public bool isTouching_Floor; //Check if enemy is touching the floor
+	public bool isTouching_Arena_Wall_L; //Check if enemy is touching Arena wall Left side
+	public bool isTouching_Arena_Wall_R; //Check if enemy is touching Arena wall Right side
 
 	[Header ("╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════")]
 	[Space (20)]
@@ -111,16 +131,19 @@ public class Firstenemy : MonoBehaviour {
 	[Header ("╔═════════════════[Attack 1]═══════════════════════════════════════════════════════════════════════════════════════")]
 	[Space (10)]
 
-	public float startTimeBtwShots;
-	public float ghost_creation_timer; //Time the Attack_1 creates projectile ghosts (trail) for	
+	public float startTimeBtwShots_1; //Value for timer
+	private float timeBtwShots_1; //Current Timer of time between Attack_1
 
-	private float timeBtwShots; //Time between Attack_1
+	public float ghost_creation_timer; //Time the Attack_1 creates projectile ghosts (trail) for	
 
 	[Header ("╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════")]
 	[Space (20)]
 	[Header ("╔═════════════════[Attack 2]═════════════════════════════════════════════════════════════════════════════════════════════")]
 	[Space (10)]
 
+	public float startTimeBtwShots_2; //Value for timer
+	private float timeBtwShots_2; //Current Timer of time between Attack_2
+	[Space (10)]
 	public float timer_x; //Timer for smoothing
 	[Space (10)]
 	public float arrow_offset_y; //Offset for Arrow during Attack_2
@@ -152,13 +175,15 @@ public class Firstenemy : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		rb = GetComponent<Rigidbody2D> ();
-		timeBtwShots = startTimeBtwShots;
+		timeBtwShots_1 = startTimeBtwShots_1;
 
 		arrow_spriteRenderer = arrow.GetComponent<SpriteRenderer> ();
 		target_spriteRenderer = target.GetComponent<SpriteRenderer> ();
 
 		arrow_spriteRenderer.enabled = false;
 		target_spriteRenderer.enabled = false;
+
+		Physics2D.IgnoreCollision (Sky_Limit.GetComponent<BoxCollider2D> (), GetComponent<BoxCollider2D> ()); //Prevents the enemy from colliding with the sky limit (this allows Attack_2 to work propperly)
 	}
 
 	void Start () {
@@ -175,9 +200,13 @@ public class Firstenemy : MonoBehaviour {
 			Idle ();
 			GetComponent<SpriteRenderer> ().sprite = enemyDefaultSprite;
 		} else if (State == "Fight") {
-			Fight ();
-			if (!groundInfo.collider) { 
-				if (Fight_State != "Attack_2") {
+			Fight (UnityEngine.Random.Range (Attack_1_Min_Frequency, Attack_1_Max_Frequency), UnityEngine.Random.Range (Attack_2_Min_Frequency, Attack_2_Max_Frequency));
+			if ((isTouching_Arena_Wall_L) || (isTouching_Arena_Wall_R)) {
+				if (Fight_State == "Attack_2") {
+					if (Attack_State == "Move_x_to_player") {
+						Attack_State = "Move_x_to_default_pos";
+					}
+				} else {
 					State = "Idle";
 				}
 			}
@@ -216,14 +245,11 @@ public class Firstenemy : MonoBehaviour {
 			isTouching_Floor = true;
 		}
 
-		if (other.gameObject.CompareTag ("Arena_Wall")) { //This makes sure the enemy never leaves the arena			
-			if (Fight_State == "Attack_1") {
-				State = "Idle";
-			} else if (Fight_State == "Attack_2") {
-				if (Attack_State == "Move_x_to_player") {
-					Attack_State = "Move_x_to_default_pos";
-				}
-			}
+		if (other.gameObject.CompareTag ("Arena_Wall_L")) { //This makes sure the enemy never leaves the arena
+			isTouching_Arena_Wall_L = true;
+		}
+		if (other.gameObject.CompareTag ("Arena_Wall_R")) {
+			isTouching_Arena_Wall_R = true;
 		}
 	}
 
@@ -235,6 +261,12 @@ public class Firstenemy : MonoBehaviour {
 		if (other.gameObject == floor) {
 			isTouching_Floor = false;
 		}
+		if (other.gameObject.CompareTag ("Arena_Wall_L")) {
+			isTouching_Arena_Wall_L = false;
+		}
+		if (other.gameObject.CompareTag ("Arena_Wall_R")) {
+			isTouching_Arena_Wall_R = false;
+		}
 	}
 
 	void Idle () {
@@ -245,35 +277,52 @@ public class Firstenemy : MonoBehaviour {
 
 		Regen (idleRegenAmmount);
 
-		if (!groundInfo.collider) //If the collider has not detected with the floor
-		{
-			if (movingRight) {
-				transform.eulerAngles = new Vector3 (0, -180, 0); //Changing Enemy direction to left
-				healthbar.transform.eulerAngles = new Vector3 (0, 0, 0); //Makes the healthbar remain in the same orientation
-				movingRight = false;
-			} else {
-				transform.eulerAngles = new Vector3 (0, 0, 0); //Changing Enemy direction to right
-				healthbar.transform.eulerAngles = new Vector3 (0, 0, 0); //Makes the healthbar remain in the same orientation
-				movingRight = true;
-			}
+		if (isTouching_Arena_Wall_L) { //If the collider has not detected with the floor
+			transform.eulerAngles = new Vector3 (0, 0, 0); //Changing Enemy direction to right
+			healthbar.transform.eulerAngles = new Vector3 (0, 0, 0); //Makes the healthbar remain in the same orientation
+		}
+		if (isTouching_Arena_Wall_R) {
+			transform.eulerAngles = new Vector3 (0, -180, 0); //Changing Enemy direction to left
+			healthbar.transform.eulerAngles = new Vector3 (0, 0, 0); //Makes the healthbar remain in the same orientation
 		}
 	}
 
-	void Fight () {
+	void Fight (int Attack_1_Timing = 1, int Attack_2_Timing = 1) {
 		if ((Fight_State != "Attack_1") && (Fight_State != "Attack_2")) { //Moving enemy towards player when enemy is not attacking and player is too far away
 			if (isTouching_Floor) {
 				Follow_Player ();
 			}
 		}
-		if ((timeBtwShots <= 0) && (Fight_State != "Attack_2")) {
-			Fight_State = "Attack_1";
-			Attack_State = "In_Progress";
-		} else {
-			timeBtwShots -= Time.deltaTime;
+
+		if ((Attack_State == "Attack_Finish") && (Fight_State == "")) {
+			Fight_State = "";
+			Attack_State = "";
 		}
-		if ((Input.GetKey (KeyCode.Q)) && (Fight_State != "Attack_2")) {
-			Fight_State = "Attack_2";
-			Attack_State = "In_Progress";
+
+		if ((!hasChosenTime_1) && (Fight_State == "") && (Attack_State == "")) {
+			startTimeBtwShots_1 = Attack_1_Timing;
+			hasChosenTime_1 = true;
+		} else {
+			if ((timeBtwShots_1 <= 0) && (Fight_State == "") && (Attack_State == "")) {
+				Fight_State = "Attack_1";
+				Attack_State = "In_Progress";
+				hasChosenTime_1 = false;
+			} else {
+				timeBtwShots_1 -= Time.deltaTime;
+			}
+		}
+
+		if ((!hasChosenTime_2) && (Fight_State == "") && (Attack_State == "")) {
+			timeBtwShots_2 = Attack_2_Timing;
+			hasChosenTime_2 = true;
+		} else {
+			if ((timeBtwShots_2 <= 0) && (Fight_State == "") && (Attack_State == "")) {
+				Fight_State = "Attack_2";
+				Attack_State = "In_Progress";
+				hasChosenTime_2 = false;
+			} else {
+				timeBtwShots_2 -= Time.deltaTime;
+			}
 		}
 	}
 
@@ -304,7 +353,7 @@ public class Firstenemy : MonoBehaviour {
 			Projectile_Instance.GetComponent<Projectile> ().shooterID = "FirstEnemy";
 			Projectile_Instance.GetComponent<Projectile> ().ProjectileDamage = Attack_1_damage;
 			Projectile_Instance.GetComponent<Projectile> ().explode = true;
-			timeBtwShots = startTimeBtwShots;
+			timeBtwShots_1 = startTimeBtwShots_1;
 			Attack_State = "Attack_Ghosts";
 		}
 		if (Attack_State == "Attack_Ghosts") {
@@ -312,7 +361,7 @@ public class Firstenemy : MonoBehaviour {
 			Projectile_Instance.GetComponent<Projectile> ().shooterID = "FirstEnemy";
 			Projectile_Instance.GetComponent<Projectile> ().ProjectileDamage = 0;
 			Projectile_Instance.GetComponent<Projectile> ().explode = false;
-			timeBtwShots = startTimeBtwShots;
+			timeBtwShots_1 = startTimeBtwShots_1;
 			StartCoroutine (Countdown (ghost_creation_timer, () => { Attack_State = "Attack_Finish"; }));
 		}
 		if (Attack_State == "Attack_Finish") {
@@ -323,7 +372,7 @@ public class Firstenemy : MonoBehaviour {
 
 	void Attack_2 () {
 		if (Attack_State == "In_Progress") {
-			StartCoroutine (Countdown (0.5f, () => { Attack_State = "Mid_Air"; }));
+			StartCoroutine (Countdown (1f, () => { Attack_State = "Mid_Air"; }));
 			Attack_State = "Jumping";
 		}
 		if (Attack_State == "Jumping") {
@@ -449,18 +498,3 @@ public class Firstenemy : MonoBehaviour {
 		}
 	}
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////	TO DO	////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////
-////																					////
-////   [x]	 Add the arrow following the x of the enemy and the y of the camera			////
-////   [x]	 		Make enemy follow the player while in move_to_player				////
-////   [x]			      Add timer to change from following player to land				////
-////   [x]							Add sprite for target area							////
-////   [x]						After landing do damage to player						////
-////   [x]		After damaging the player, enemy goes back a few "steps"?				////
-////   [x]	Step back to adequate position left or right depending on player pos		////
-////   []						Refine timings for good fight							////
-////																					////
-////////////////////////////////////////////////////////////////////////////////////////////

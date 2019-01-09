@@ -56,8 +56,18 @@ public class RunePowers : MonoBehaviour {
 	[Header ("╔═════════════════[Cursor]═════════════════════════════════════════════════════════════════════════════════════════════")]
 	[Space (10)]
 
-	public Texture2D cursorTexture;
-	public Texture2D cursorTarget;
+	public string Cursor_Current;
+	[Space (10)]
+	//public Texture2D cursorTarget;
+	public Texture2D Cursor_FFF;
+	public Texture2D Cursor_TFT;
+	public Texture2D Cursor_TFF;
+	public Texture2D Cursor_TTF;
+	public Texture2D Cursor_TTT;
+	public Texture2D Cursor_FTT;
+	public Texture2D Cursor_FFT;
+	public Texture2D Cursor_FTF;
+	[Space (10)]
 	private Vector2 hotSpot = Vector2.zero;
 	private CursorMode cursorMode = CursorMode.Auto;
 	public bool Mouse_Right_Down;
@@ -124,20 +134,25 @@ public class RunePowers : MonoBehaviour {
 		animator = GetComponent<Animator> ();
 		rb = GetComponent<Rigidbody2D> ();
 
-		hotSpot = new Vector2 (cursorTexture.width / 2, cursorTexture.height / 2); //Setting cursor hotspot to centre of image
-		Cursor.SetCursor (cursorTexture, hotSpot, cursorMode);
+		hotSpot = new Vector2 (Cursor_FFF.width / 2, Cursor_FFF.height / 2); //Setting cursor hotspot to centre of image
+		Cursor.SetCursor (Cursor_FFF, hotSpot, cursorMode);
 	}
 
 	void Update () {
 		if (!PauseMenu.GameIsPaused) {
+			if (main_camera.GetComponent<PlayerManager> ().playerHealth > 0) {
+				RuneIsCollected ();
+			} else if (Cursor_Current != "FFF") {
+				Cursor.SetCursor (Cursor_FFF, hotSpot, cursorMode);
+			}
+
 			Mouse_Down ();
-			Mouse_Aim ();
+			Mouse_Cursor ();
 			RuneTimeout_UI ();
-			RuneIsCollected ();
+
 		} else { //Prevents Mouse from being target in pause menu
 			Mouse_Right_Down = false;
-			hotSpot = new Vector2 (cursorTexture.width / 2, cursorTexture.height / 2);
-			Cursor.SetCursor (cursorTexture, hotSpot, cursorMode);
+			Cursor.SetCursor (Cursor_FFF, hotSpot, cursorMode);
 		}
 	}
 
@@ -180,17 +195,33 @@ public class RunePowers : MonoBehaviour {
 		}
 	}
 
-	void Mouse_Aim () {
-		if ((Mouse_Right_Down) && (Rune_2_State == "Ready") && (main_camera.GetComponent<PlayerManager> ().playerHealth > 0)) { //If Right Mouse button is down
-			hotSpot = new Vector2 (cursorTarget.width / 2, cursorTarget.height / 2);
-			Cursor.SetCursor (cursorTarget, hotSpot, cursorMode);
-			if (Input.GetMouseButtonDown (0)) { //If Left Mouse button is down
-				Rune_2_State = "In_Progress";
-			}
-		} else if ((Input.GetMouseButtonUp (1)) || (Rune_2_State == "Attack_Ghosts")) { //If Right Mouse button is up
-			hotSpot = new Vector2 (cursorTexture.width / 2, cursorTexture.height / 2);
-			Cursor.SetCursor (cursorTexture, hotSpot, cursorMode);
+	void Mouse_Cursor () { //Different cursor based on powers that are/arent ready
+		if ((Cursor_Current != "FFF") && (Rune_2_State != "Ready") && (Rune_4_State != "Ready") && (Rune_5_State != "Ready")) {
+			Cursor.SetCursor (Cursor_FFF, hotSpot, cursorMode);
+			Cursor_Current = "FFF";
+		} else if ((Cursor_Current != "TFT") && (Rune_2_State == "Ready") && (Rune_4_State != "Ready") && (Rune_5_State == "Ready")) {
+			Cursor.SetCursor (Cursor_TFT, hotSpot, cursorMode);
+			Cursor_Current = "TFT";
+		} else if ((Cursor_Current != "TFF") && (Rune_2_State == "Ready") && (Rune_4_State != "Ready") && (Rune_5_State != "Ready")) {
+			Cursor.SetCursor (Cursor_TFF, hotSpot, cursorMode);
+			Cursor_Current = "TFF";
+		} else if ((Cursor_Current != "TTF") && (Rune_2_State == "Ready") && (Rune_4_State == "Ready") && (Rune_5_State != "Ready")) {
+			Cursor.SetCursor (Cursor_TTF, hotSpot, cursorMode);
+			Cursor_Current = "TTF";
+		} else if ((Cursor_Current != "TTT") && (Rune_2_State == "Ready") && (Rune_4_State == "Ready") && (Rune_5_State == "Ready")) {
+			Cursor.SetCursor (Cursor_TTT, hotSpot, cursorMode);
+			Cursor_Current = "TTT";
+		} else if ((Cursor_Current != "FTT") && (Rune_2_State != "Ready") && (Rune_4_State == "Ready") && (Rune_5_State == "Ready")) {
+			Cursor.SetCursor (Cursor_FTT, hotSpot, cursorMode);
+			Cursor_Current = "FTT";
+		} else if ((Cursor_Current != "FFT") && (Rune_2_State != "Ready") && (Rune_4_State != "Ready") && (Rune_5_State == "Ready")) {
+			Cursor.SetCursor (Cursor_FFT, hotSpot, cursorMode);
+			Cursor_Current = "FFT";
+		} else if ((Cursor_Current != "FTF") && (Rune_2_State != "Ready") && (Rune_4_State == "Ready") && (Rune_5_State != "Ready")) {
+			Cursor.SetCursor (Cursor_FTF, hotSpot, cursorMode);
+			Cursor_Current = "FTF";
 		}
+
 	}
 
 	void RuneIsCollected () {
@@ -217,14 +248,14 @@ public class RunePowers : MonoBehaviour {
 
 		if (Rune_4.GetComponent<RuneFollowing> ().isCollected) {
 			UI_Rune_4.SetActive (true);
-			//Power_4 ();
+			Power_4 ();
 		} else {
 			UI_Rune_4.SetActive (false);
 		}
 
 		if (Rune_5.GetComponent<RuneFollowing> ().isCollected) {
 			UI_Rune_5.SetActive (true);
-			//Power_5 ();
+			Power_5 ();
 		} else {
 			UI_Rune_5.SetActive (false);
 		}
@@ -271,6 +302,7 @@ public class RunePowers : MonoBehaviour {
 			Rune_1_CurrentTime = 0;
 			Rune_1_State = "Ready";
 			animator.SetBool ("bubble", false);
+			GetComponent<CircleCollider2D> ().enabled = false;
 		}
 		if (Input.GetKeyUp (KeyCode.Space)) { //When space is released and player on the air then say he has jumped before
 			if (!Player.GetComponent<PlayerMovement> ().isGrounded) {
@@ -278,6 +310,7 @@ public class RunePowers : MonoBehaviour {
 			}
 			Rune_1_State = "Idle"; //When space is released the Bubble will be disabled
 			animator.SetBool ("bubble", false);
+			GetComponent<CircleCollider2D> ().enabled = false;
 		}
 		if (Input.GetKey (KeyCode.Space)) { //When Space is pressed and the cooldown is reset and player on the air activate bubble and set timeout
 			if ((Rune_1_State == "Ready") && (!Player.GetComponent<PlayerMovement> ().isGrounded) && (Player.GetComponent<PlayerMovement> ().hasJumped)) {
@@ -289,6 +322,7 @@ public class RunePowers : MonoBehaviour {
 			rb.velocity = Vector2.up * Rune_1_UpForce;
 			Player.GetComponent<PlayerMovement> ().hasJumped = false;
 			animator.SetBool ("bubble", true);
+			GetComponent<CircleCollider2D> ().enabled = true;
 		}
 	}
 
@@ -307,6 +341,11 @@ public class RunePowers : MonoBehaviour {
 			Rune_2_CurrentTime = 0;
 			Rune_2_State = "Ready";
 		}
+
+		if ((Rune_2_State == "Ready") && (Mouse_Left_Down)) {
+			Rune_2_State = "In_Progress";
+		}
+
 		if (Rune_2_State == "In_Progress") {
 			var Projectile_Instance = (GameObject) Instantiate (Rune_2_Projectile, transform.position, Quaternion.identity); //Shoot a projectile from the enemies body with no rotation
 			Projectile_Instance.GetComponent<Projectile> ().shooterID = "Player";
@@ -361,6 +400,68 @@ public class RunePowers : MonoBehaviour {
 		}
 
 		if ((Rune_3_State == "Idle") || (Rune_3_State == "Ready")) {
+			main_camera.GetComponent<PlayerManager> ().invincible = false;
+		}
+	}
+
+	void Power_4 () {
+		if (GameManager.Instance.UIRuneEnabled == "RADIAL") {
+			UI_Rune_4.transform.GetComponent<Image> ().fillAmount = 1 - (Rune_4_CurrentTime / Rune_4_Timeout);
+			UI_Text_Rune_4.text = "";
+		} else if (GameManager.Instance.UIRuneEnabled == "NUMERICAL") {
+			UI_Text_Rune_4.text = (Math.Floor (Rune_4_CurrentTime * 10f) / 10f).ToString ();
+			UI_Rune_4.transform.GetComponent<Image> ().fillAmount = 1;
+		}
+
+		if (Rune_4_CurrentTime > 0) { //Countdown from Timeout to 0 using real time (regardless of framerate)
+			Rune_4_CurrentTime -= (1 * Time.deltaTime);
+		} else if (Rune_4_CurrentTime <= 0) {
+			Rune_4_CurrentTime = 0;
+			Rune_4_State = "Ready";
+		}
+
+		if ((Rune_4_State == "Ready") && (Input.GetKey (KeyCode.E))) {
+			Rune_4_CurrentTime = Rune_4_Timeout;
+			Rune_4_State = "In_Progress";
+		}
+
+		if (Rune_4_State == "In_Progress") {
+			main_camera.GetComponent<PlayerManager> ().invincible = true;
+			Rune_4_State = "Idle";
+		}
+
+		if ((Rune_4_State == "Idle") || (Rune_4_State == "Ready")) {
+			main_camera.GetComponent<PlayerManager> ().invincible = false;
+		}
+	}
+
+	void Power_5 () {
+		if (GameManager.Instance.UIRuneEnabled == "RADIAL") {
+			UI_Rune_5.transform.GetComponent<Image> ().fillAmount = 1 - (Rune_5_CurrentTime / Rune_5_Timeout);
+			UI_Text_Rune_5.text = "";
+		} else if (GameManager.Instance.UIRuneEnabled == "NUMERICAL") {
+			UI_Text_Rune_5.text = (Math.Floor (Rune_5_CurrentTime * 10f) / 10f).ToString ();
+			UI_Rune_5.transform.GetComponent<Image> ().fillAmount = 1;
+		}
+
+		if (Rune_5_CurrentTime > 0) { //Countdown from Timeout to 0 using real time (regardless of framerate)
+			Rune_5_CurrentTime -= (1 * Time.deltaTime);
+		} else if (Rune_5_CurrentTime <= 0) {
+			Rune_5_CurrentTime = 0;
+			Rune_5_State = "Ready";
+		}
+
+		if ((Rune_5_State == "Ready") && (Mouse_Right_Down)) {
+			Rune_5_CurrentTime = Rune_5_Timeout;
+			Rune_5_State = "In_Progress";
+		}
+
+		if (Rune_5_State == "In_Progress") {
+			main_camera.GetComponent<PlayerManager> ().invincible = true;
+			Rune_5_State = "Idle";
+		}
+
+		if ((Rune_5_State == "Idle") || (Rune_5_State == "Ready")) {
 			main_camera.GetComponent<PlayerManager> ().invincible = false;
 		}
 	}
