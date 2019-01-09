@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 060fb5e42fe68ef4daec680d04089bea
+timeCreated: 1543864131
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Typewriter_Condensed_Demi
+  fontNames:
+  - Typewriter_Condensed_Demi
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

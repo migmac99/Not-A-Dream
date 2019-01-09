@@ -51,22 +51,36 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Particle Ribbon by Moonflower Carnivore\Scripts\randomParticleRotation.cs" />
-     <Compile Include="Assets\Particle Ribbon by Moonflower Carnivore\Scripts\ReverseNormals.cs" />
-     <Compile Include="Assets\Particle Ribbon by Moonflower Carnivore\Scripts\rotation.cs" />
-     <Compile Include="Assets\Scripts\Boulder.cs" />
-     <Compile Include="Assets\Scripts\BoulderSpawn.cs" />
-     <Compile Include="Assets\Scripts\CameraMovement.cs" />
-     <Compile Include="Assets\Scripts\Firstenemy.cs" />
-     <Compile Include="Assets\Scripts\GameManager.cs" />
-     <Compile Include="Assets\Scripts\Parallax.cs" />
-     <Compile Include="Assets\Scripts\ParticleFollowing.cs" />
-     <Compile Include="Assets\Scripts\PlayerMovement.cs" />
-     <Compile Include="Assets\Scripts\Projectile.cs" />
-     <Compile Include="Assets\Scripts\RuneFollowing.cs" />
-     <Compile Include="Assets\Scripts\RunePowers.cs" />
-     <None Include="Assets\Particle Ribbon by Moonflower Carnivore\Shaders\Particle Alpha Blend HDR.shader" />
-     <None Include="Assets\Particle Ribbon by Moonflower Carnivore\readme_Simple_Particle_Ribbon.txt" />
+     <Compile Include="Assets\Downloaded_Assets\Particle Ribbon by Moonflower Carnivore\Scripts\randomParticleRotation.cs" />
+     <Compile Include="Assets\Downloaded_Assets\Particle Ribbon by Moonflower Carnivore\Scripts\ReverseNormals.cs" />
+     <Compile Include="Assets\Downloaded_Assets\Particle Ribbon by Moonflower Carnivore\Scripts\rotation.cs" />
+     <Compile Include="Assets\Downloaded_Assets\Simple UI\Samples\IconPreview.cs" />
+     <Compile Include="Assets\Scripts\Game Mechanics\CameraMovement.cs" />
+     <Compile Include="Assets\Scripts\Game Mechanics\Firstenemy.cs" />
+     <Compile Include="Assets\Scripts\Game Mechanics\ParticleFollowing.cs" />
+     <Compile Include="Assets\Scripts\Game Mechanics\PlayerManager.cs" />
+     <Compile Include="Assets\Scripts\Game Mechanics\PlayerMovement.cs" />
+     <Compile Include="Assets\Scripts\Game Mechanics\Projectile.cs" />
+     <Compile Include="Assets\Scripts\Game Mechanics\RuneFollowing.cs" />
+     <Compile Include="Assets\Scripts\Game Mechanics\RunePowers.cs" />
+     <Compile Include="Assets\Scripts\Map Related Scripts\ArrowControl.cs" />
+     <Compile Include="Assets\Scripts\Map Related Scripts\Boulder.cs" />
+     <Compile Include="Assets\Scripts\Map Related Scripts\BoulderRotate.cs" />
+     <Compile Include="Assets\Scripts\Map Related Scripts\BoulderRotate1.cs" />
+     <Compile Include="Assets\Scripts\Map Related Scripts\BoulderSpawn.cs" />
+     <Compile Include="Assets\Scripts\Map Related Scripts\Parallax.cs" />
+     <Compile Include="Assets\Scripts\Map Related Scripts\PassageDoor.cs" />
+     <Compile Include="Assets\Scripts\Map Related Scripts\Path_Manager.cs" />
+     <Compile Include="Assets\Scripts\Menu Scripts\GameManager.cs" />
+     <Compile Include="Assets\Scripts\Menu Scripts\PauseMenu.cs" />
+     <Compile Include="Assets\Scripts\Menu Scripts\SettingsMenu.cs" />
+     <Compile Include="Assets\Scripts\Menu Scripts\Singleton.cs" />
+     <Compile Include="Assets\Scripts\Menu Scripts\StartMenu.cs" />
+     <Compile Include="Assets\Scripts\Other Scripts\FadeInGameObject.cs" />
+     <Compile Include="Assets\Scripts\Other Scripts\FadeOutGameObject.cs" />
+     <None Include="Assets\Downloaded_Assets\Particle Ribbon by Moonflower Carnivore\Shaders\Particle Alpha Blend HDR.shader" />
+     <None Include="Assets\Downloaded_Assets\Simple UI\Fonts\OFL.txt" />
+     <None Include="Assets\Downloaded_Assets\Particle Ribbon by Moonflower Carnivore\readme_Simple_Particle_Ribbon.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

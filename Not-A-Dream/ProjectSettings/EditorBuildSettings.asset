@@ -4,4 +4,13 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/_Preload.unity
+    guid: 5264bf0bd966f354a9b71d59147155c5
+  - enabled: 1
+    path: Assets/Scenes/StartMenu.unity
+    guid: 15273a543d895b04eb94be15fc9dad52
+  - enabled: 1
+    path: Assets/Scenes/not-a-dream.unity
+    guid: dc987020959a99b4c9f0e59b79a87443
