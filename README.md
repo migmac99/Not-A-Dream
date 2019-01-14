@@ -14,11 +14,11 @@
 - [ ] Puzzles
 - [ ] Physical challenges
 - [ ] Player mechanics
-- [ ] Enemy mechanics
+- [x] Enemy mechanics
 - [ ] Overall mechanics
 - [ ] Story
 - [ ] Sound
-- [ ] Menus
+- [x] Menus
 
 --------------------------------------------------------------------------------
  
