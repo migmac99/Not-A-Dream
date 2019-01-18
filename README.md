@@ -6,7 +6,7 @@
 - [x] Camera Movement
 - [x] Rune Movement
 - [x] Rune Collection
-- [ ] Rune Powers
+- [x] Rune Powers
 - [ ] Player animations
 - [ ] Enemy animations
 - [ ] Map Design
@@ -15,7 +15,7 @@
 - [ ] Physical challenges
 - [ ] Player mechanics
 - [x] Enemy mechanics
-- [ ] Overall mechanics
+- [x] Overall mechanics
 - [ ] Story
 - [ ] Sound
 - [x] Menus
