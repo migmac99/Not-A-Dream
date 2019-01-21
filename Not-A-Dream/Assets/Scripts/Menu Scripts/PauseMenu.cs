@@ -15,6 +15,8 @@ public class PauseMenu : MonoBehaviour {
 	public GameObject selectedMenuUI;
 	[Space (10)]
 	public GameObject settingsMenuUI;
+	[Space (10)]
+	public GameObject respawnMenuUI;
 
 	void Awake () {
 		animator = selectedMenuUI.GetComponent<Animator> ();
@@ -24,8 +26,10 @@ public class PauseMenu : MonoBehaviour {
 	void Update () {
 		if (Input.GetKeyDown (KeyCode.Escape)) {
 			if (GameIsPaused) {
-				Resume ();
-			} else {
+				if ((!settingsMenuUI.activeSelf) && (!respawnMenuUI.activeSelf)) {
+					Resume ();
+				}
+			} else if (!respawnMenuUI.activeSelf) {
 				Pause ();
 			}
 		}

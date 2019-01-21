@@ -63,13 +63,13 @@ public class HealthGUI : EditorWindow {
 
 				GUILayout.BeginVertical (); {
 					GUILayout.Label ("PLAYER");
-					PlayerHealth = main_camera.GetComponent<PlayerManager> ().playerHealth;
+					PlayerHealth = GameManager.Instance.PlayerHealth;
 
-					EditorGUI.ProgressBar (EditorGUILayout.GetControlRect (false, 20), PlayerHealth / 100, "Health [" + main_camera.GetComponent<PlayerManager> ().playerHealth.ToString () + "]");
+					EditorGUI.ProgressBar (EditorGUILayout.GetControlRect (false, 20), PlayerHealth / 100, "Health [" + GameManager.Instance.PlayerHealth.ToString () + "]");
 					GUILayout.BeginHorizontal (); {
 
 						if (GUILayout.Button ("Reset Health [100]")) {
-							main_camera.GetComponent<PlayerManager> ().playerHealth = 100;
+							GameManager.Instance.PlayerHealth = 100;
 						}
 						if (GUILayout.Button ("Damage Player [10]")) {
 							main_camera.GetComponent<PlayerManager> ().TakeDamage (10);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -112,23 +113,47 @@ public class RunePowers : MonoBehaviour {
 	[Range (0.1f, 50f)]
 	public float Rune_3_DodgeSpeed;
 
+	[Range (0f, 2f)]
+	public float Rune_3_Invincible;
+
 	[Header ("╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════")]
 	[Space (20)]
 	[Header ("╔═════════════════[Rune 4]═════════════════════════════════════════════════════════════════════════════════════════════")]
 	[Space (10)]
 
+	public GameObject Rune_4_Explosion;
+	public GameObject Rune_4_ExplosionCollision;
+	[Space (10)]
 	public float Rune_4_Timeout; //In Seconds
 	public float Rune_4_CurrentTime = 0;
 	public string Rune_4_State = "Idle";
+	[Space (10)]
+	public float Rune_4_Damage;
+	[Space (10)]
+	[Range (0f, 2f)]
+	public float Rune_4_Invincible;
 
 	[Header ("╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════")]
 	[Space (20)]
 	[Header ("╔═════════════════[Rune 5]═════════════════════════════════════════════════════════════════════════════════════════════")]
 	[Space (10)]
 
+	public GameObject Rune_5_Projectile;
+	[Space (10)]
+	public GameObject Rune_5_Magic;
+	public GameObject[] Rune_5_Particles;
+	public GameObject Rune_5_Particles_SpawnPosition;
+	public GameObject Rune_5_Particles_EndPosition;
+
+	public float Rune_5_Particles_Next;
+
 	public float Rune_5_Timeout; //In Seconds
 	public float Rune_5_CurrentTime = 0;
 	public string Rune_5_State = "Idle";
+	[Space (10)]
+	public float Rune_5_Damage;
+	[Range (0f, 20f)]
+	public float Rune_5_Invincible;
 
 	void Awake () {
 		animator = GetComponent<Animator> ();
@@ -140,7 +165,7 @@ public class RunePowers : MonoBehaviour {
 
 	void Update () {
 		if (!PauseMenu.GameIsPaused) {
-			if (main_camera.GetComponent<PlayerManager> ().playerHealth > 0) {
+			if (GameManager.Instance.PlayerHealth > 0) {
 				RuneIsCollected ();
 			} else if (Cursor_Current != "FFF") {
 				Cursor.SetCursor (Cursor_FFF, hotSpot, cursorMode);
@@ -178,8 +203,10 @@ public class RunePowers : MonoBehaviour {
 	// This is creating a CoRoutine which runs independently of the function it is called from
 	// StartCoroutine (Countdown (3f, () => {CODE_HERE}));
 	IEnumerator Countdown (float seconds, Action onComplete) {
-		yield return new WaitForSecondsRealtime (seconds);
-		onComplete ();
+		if (!PauseMenu.GameIsPaused) {
+			yield return new WaitForSecondsRealtime (seconds);
+			onComplete ();
+		}
 	}
 
 	void Mouse_Down () {
@@ -225,35 +252,37 @@ public class RunePowers : MonoBehaviour {
 	}
 
 	void RuneIsCollected () {
-		if (Rune_1.GetComponent<RuneFollowing> ().isCollected) { //If the rune has been collected (Reference to the RuneFollowing script inside this rune)
+		if (GameManager.Instance.UnlockedRune[1]) { //If the rune has been collected (Reference to the RuneFollowing script inside this rune)
 			UI_Rune_1.SetActive (true); //Activates the gameobject
 			Power_1 (); //Calls the respective rune Power
 		} else {
 			UI_Rune_1.SetActive (false); //Deactivates the gameobject
 		}
 
-		if (Rune_2.GetComponent<RuneFollowing> ().isCollected) {
+		if (GameManager.Instance.UnlockedRune[2]) {
 			UI_Rune_2.SetActive (true);
 			Power_2 ();
 		} else {
 			UI_Rune_2.SetActive (false);
 		}
 
-		if (Rune_3.GetComponent<RuneFollowing> ().isCollected) {
+		if (GameManager.Instance.UnlockedRune[3]) {
 			UI_Rune_3.SetActive (true);
-			Power_3 ();
+			if (!GetComponent<PlayerMovement> ().PlayerPaused) {
+				Power_3 ();
+			}
 		} else {
 			UI_Rune_3.SetActive (false);
 		}
 
-		if (Rune_4.GetComponent<RuneFollowing> ().isCollected) {
+		if (GameManager.Instance.UnlockedRune[4]) {
 			UI_Rune_4.SetActive (true);
 			Power_4 ();
 		} else {
 			UI_Rune_4.SetActive (false);
 		}
 
-		if (Rune_5.GetComponent<RuneFollowing> ().isCollected) {
+		if (GameManager.Instance.UnlockedRune[5]) {
 			UI_Rune_5.SetActive (true);
 			Power_5 ();
 		} else {
@@ -297,12 +326,14 @@ public class RunePowers : MonoBehaviour {
 		}
 
 		if (Rune_1_CurrentTime > 0) { //Countdown from Timeout to 0 using real time (regardless of framerate)
+			//if (!GetComponent<PlayerMovement> ().PlayerPaused) {
 			Rune_1_CurrentTime -= (1 * Time.deltaTime);
+			//}
 		} else if (Rune_1_CurrentTime <= 0) { //When CurrentTime reaches 0 then the bubble can be activated again 
 			Rune_1_CurrentTime = 0;
 			Rune_1_State = "Ready";
 			animator.SetBool ("bubble", false);
-			GetComponent<CircleCollider2D> ().enabled = false;
+			main_camera.GetComponent<PlayerManager> ().invincible = false;
 		}
 		if (Input.GetKeyUp (KeyCode.Space)) { //When space is released and player on the air then say he has jumped before
 			if (!Player.GetComponent<PlayerMovement> ().isGrounded) {
@@ -310,19 +341,21 @@ public class RunePowers : MonoBehaviour {
 			}
 			Rune_1_State = "Idle"; //When space is released the Bubble will be disabled
 			animator.SetBool ("bubble", false);
-			GetComponent<CircleCollider2D> ().enabled = false;
+			main_camera.GetComponent<PlayerManager> ().invincible = false;
 		}
 		if (Input.GetKey (KeyCode.Space)) { //When Space is pressed and the cooldown is reset and player on the air activate bubble and set timeout
 			if ((Rune_1_State == "Ready") && (!Player.GetComponent<PlayerMovement> ().isGrounded) && (Player.GetComponent<PlayerMovement> ().hasJumped)) {
 				Rune_1_CurrentTime = Rune_1_Timeout;
 				Rune_1_State = "Active";
+				main_camera.GetComponent<PlayerManager> ().invincible = true;
 			}
 		}
 		if (Rune_1_State == "Active") { //Bubble going up
-			rb.velocity = Vector2.up * Rune_1_UpForce;
+			if (!GetComponent<PlayerMovement> ().PlayerPaused) {
+				rb.velocity = Vector2.up * Rune_1_UpForce;
+			}
 			Player.GetComponent<PlayerMovement> ().hasJumped = false;
 			animator.SetBool ("bubble", true);
-			GetComponent<CircleCollider2D> ().enabled = true;
 		}
 	}
 
@@ -348,19 +381,27 @@ public class RunePowers : MonoBehaviour {
 
 		if (Rune_2_State == "In_Progress") {
 			var Projectile_Instance = (GameObject) Instantiate (Rune_2_Projectile, transform.position, Quaternion.identity); //Shoot a projectile from the enemies body with no rotation
-			Projectile_Instance.GetComponent<Projectile> ().shooterID = "Player";
+			Projectile_Instance.GetComponent<Projectile> ().shooterID = "Player_Rune_2";
 			Projectile_Instance.GetComponent<Projectile> ().ProjectileDamage = Rune_2_Damage;
-			Projectile_Instance.GetComponent<Projectile> ().explode = true;
 			Rune_2_CurrentTime = Rune_2_Timeout;
-			Rune_2_State = "Attack_Ghosts";
+			Rune_2_State = "Idle";
 		}
-		if (Rune_2_State == "Attack_Ghosts") {
-			var Projectile_Instance = (GameObject) Instantiate (Rune_2_Projectile, transform.position, Quaternion.identity); //Shoot a projectile from the enemies body with no rotation
-			Projectile_Instance.GetComponent<Projectile> ().shooterID = "Player";
-			Projectile_Instance.GetComponent<Projectile> ().ProjectileDamage = 0;
-			Projectile_Instance.GetComponent<Projectile> ().explode = false;
-			StartCoroutine (Countdown (Rune_2_Ghost_Creation_Timer, () => { Rune_2_State = "Idle"; }));
-		}
+
+		// if (Rune_2_State == "In_Progress") {
+		// 	var Projectile_Instance = (GameObject) Instantiate (Rune_2_Projectile, transform.position, Quaternion.identity); //Shoot a projectile from the enemies body with no rotation
+		// 	Projectile_Instance.GetComponent<Projectile> ().shooterID = "Player";
+		// 	Projectile_Instance.GetComponent<Projectile> ().ProjectileDamage = Rune_2_Damage;
+		// 	Projectile_Instance.GetComponent<Projectile> ().explode = true;
+		// 	Rune_2_CurrentTime = Rune_2_Timeout;
+		// 	Rune_2_State = "Attack_Ghosts";
+		// }
+		// if (Rune_2_State == "Attack_Ghosts") {
+		// 	var Projectile_Instance = (GameObject) Instantiate (Rune_2_Projectile, transform.position, Quaternion.identity); //Shoot a projectile from the enemies body with no rotation
+		// 	Projectile_Instance.GetComponent<Projectile> ().shooterID = "Player";
+		// 	Projectile_Instance.GetComponent<Projectile> ().ProjectileDamage = 0;
+		// 	Projectile_Instance.GetComponent<Projectile> ().explode = false;
+		// 	StartCoroutine (Countdown (Rune_2_Ghost_Creation_Timer, () => { Rune_2_State = "Idle"; }));
+		// }
 	}
 
 	void Power_3 () {
@@ -383,6 +424,7 @@ public class RunePowers : MonoBehaviour {
 			if (Rune_3_State == "Ready") {
 				Rune_3_CurrentTime = Rune_3_Timeout;
 				Rune_3_State = "In_Progress";
+				StartCoroutine (Countdown (Rune_3_Invincible, () => { main_camera.GetComponent<PlayerManager> ().invincible = false; }));
 			}
 		}
 
@@ -397,10 +439,6 @@ public class RunePowers : MonoBehaviour {
 				Player.transform.position += new Vector3 (-Rune_3_DodgeSpeed * Time.deltaTime, 0, 0);
 				StartCoroutine (Countdown (Rune_3_DodgeTime, () => { Rune_3_State = "Idle"; }));
 			}
-		}
-
-		if ((Rune_3_State == "Idle") || (Rune_3_State == "Ready")) {
-			main_camera.GetComponent<PlayerManager> ().invincible = false;
 		}
 	}
 
@@ -423,15 +461,36 @@ public class RunePowers : MonoBehaviour {
 		if ((Rune_4_State == "Ready") && (Input.GetKey (KeyCode.E))) {
 			Rune_4_CurrentTime = Rune_4_Timeout;
 			Rune_4_State = "In_Progress";
+			Rune_4_Explosion.SetActive (false);
+			StartCoroutine (Countdown (Rune_4_Invincible + 0.5f, () => { main_camera.GetComponent<PlayerManager> ().invincible = false; }));
 		}
 
 		if (Rune_4_State == "In_Progress") {
 			main_camera.GetComponent<PlayerManager> ().invincible = true;
-			Rune_4_State = "Idle";
+			Rune_4_State = "Check_Ground";
 		}
 
-		if ((Rune_4_State == "Idle") || (Rune_4_State == "Ready")) {
-			main_camera.GetComponent<PlayerManager> ().invincible = false;
+		if (Rune_4_State == "Check_Ground") {
+			if (GetComponent<PlayerMovement> ().isGrounded) {
+				Rune_4_State = "Jump";
+				StartCoroutine (Countdown (1.05f, () => { GetComponent<PlayerMovement> ().PlayerPaused = false; Rune_4_ExplosionCollision.SetActive (false); }));
+			} else {
+				Rune_4_State = "Explode";
+				StartCoroutine (Countdown (0.75f, () => { GetComponent<PlayerMovement> ().PlayerPaused = false; Rune_4_ExplosionCollision.SetActive (false); }));
+			}
+
+		}
+
+		if (Rune_4_State == "Jump") {
+			GetComponent<PlayerMovement> ().Jump ();
+			StartCoroutine (Countdown (0.30f, () => { Rune_4_State = "Explode"; }));
+		}
+
+		if (Rune_4_State == "Explode") {
+			GetComponent<PlayerMovement> ().PlayerPaused = true;
+			Rune_4_Explosion.SetActive (true);
+			Rune_4_ExplosionCollision.SetActive (true);
+			Rune_4_State = "Idle";
 		}
 	}
 
@@ -454,15 +513,66 @@ public class RunePowers : MonoBehaviour {
 		if ((Rune_5_State == "Ready") && (Mouse_Right_Down)) {
 			Rune_5_CurrentTime = Rune_5_Timeout;
 			Rune_5_State = "In_Progress";
+			StartCoroutine (Countdown (Rune_5_Invincible + 0.5f, () => { main_camera.GetComponent<PlayerManager> ().invincible = false; Rune_5_Magic.SetActive (false); }));
 		}
 
 		if (Rune_5_State == "In_Progress") {
 			main_camera.GetComponent<PlayerManager> ().invincible = true;
-			Rune_5_State = "Idle";
+			Rune_5_State = "Enabling";
+			StartCoroutine (Countdown (2f, () => { GetComponent<PlayerMovement> ().PlayerPaused = false; }));
 		}
 
-		if ((Rune_5_State == "Idle") || (Rune_5_State == "Ready")) {
-			main_camera.GetComponent<PlayerManager> ().invincible = false;
+		if (Rune_5_State == "Enabling") {
+			GetComponent<PlayerMovement> ().PlayerPaused = true;
+			for (int i = 0; i < Rune_5_Particles.Length; i++) {
+				//Rune_5_Particles[i].SetActive (false);
+				Rune_5_Particles[i].transform.position = Rune_5_Particles_SpawnPosition.transform.position;
+				Rune_5_Particles[i].GetComponent<ParticleFollowing> ().desiredParticlePos = Rune_5_Particles_EndPosition;
+				Rune_5_Particles[i].GetComponent<ParticleFollowing> ().Rune_5_State = "Charging_1";
+			}
+			Rune_5_Magic.SetActive (true);
+			Rune_5_State = "Charging_1";
 		}
+
+		if (Rune_5_State == "Charging_1") {
+			StartCoroutine (Countdown (Rune_5_Particles_Next + Rune_5_Particles_Next * 0, () => { Rune_5_Particles[0].SetActive (true); }));
+			StartCoroutine (Countdown (Rune_5_Particles_Next + Rune_5_Particles_Next * 1, () => { Rune_5_Particles[1].SetActive (true); }));
+			StartCoroutine (Countdown (Rune_5_Particles_Next + Rune_5_Particles_Next * 2, () => { Rune_5_Particles[2].SetActive (true); }));
+			StartCoroutine (Countdown (Rune_5_Particles_Next + Rune_5_Particles_Next * 3, () => { Rune_5_Particles[3].SetActive (true); }));
+			StartCoroutine (Countdown (Rune_5_Particles_Next + Rune_5_Particles_Next * 4, () => { Rune_5_Particles[4].SetActive (true); }));
+			StartCoroutine (Countdown (Rune_5_Particles_Next + Rune_5_Particles_Next * 5, () => { Rune_5_Particles[5].SetActive (true); }));
+			StartCoroutine (Countdown (Rune_5_Particles_Next + Rune_5_Particles_Next * 6, () => { Rune_5_Particles[6].SetActive (true); }));
+			StartCoroutine (Countdown (Rune_5_Particles_Next + Rune_5_Particles_Next * 7, () => { Rune_5_Particles[7].SetActive (true); }));
+			StartCoroutine (Countdown (Rune_5_Particles_Next * 8, () => { Rune_5_State = "Charging_2"; }));
+			Rune_5_State = "";
+		}
+
+		if (Rune_5_State == "Charging_2") {
+			for (int i = 0; i < Rune_5_Particles.Length; i++) {
+				Rune_5_Particles[i].GetComponent<ParticleFollowing> ().Rune_5_State = "Charging_2";
+			}
+			Rune_5_State = "";
+			StartCoroutine (Countdown (Rune_5_Particles_Next, () => { Rune_5_State = "Merging"; }));
+		}
+
+		if (Rune_5_State == "Merging") {
+			for (int i = 0; i < Rune_5_Particles.Length; i++) {
+				Rune_5_Particles[i].GetComponent<ParticleFollowing> ().Rune_5_State = "Merging";
+			}
+			Rune_5_State = "";
+			StartCoroutine (Countdown (Rune_5_Particles_Next * 4, () => { Rune_5_State = "Charged"; }));
+		}
+
+		if (Rune_5_State == "Charged") {
+			for (int i = 0; i < Rune_5_Particles.Length; i++) {
+				Rune_5_Particles[i].SetActive (false);
+			}
+			var Projectile_Instance = (GameObject) Instantiate (Rune_5_Projectile, Rune_5_Particles_EndPosition.transform.position, Quaternion.identity); //Shoot a projectile from the enemies body with no rotation
+			Projectile_Instance.GetComponent<Projectile> ().shooterID = "Player_Rune_5";
+			Projectile_Instance.GetComponent<Projectile> ().ProjectileDamage = Rune_5_Damage;
+			Rune_5_State = "";
+		}
+
+		if ((Rune_5_State == "Idle") || (Rune_5_State == "Ready")) { }
 	}
 }

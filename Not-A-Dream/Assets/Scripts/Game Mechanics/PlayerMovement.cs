@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour {
 	public LayerMask whatIsGround;
 	public Transform groundCheck;
 	public float checkRadius;
-	private float moveInput;
+	//public float moveInput;
 
 	public bool facingRight = true;
 
@@ -26,52 +26,76 @@ public class PlayerMovement : MonoBehaviour {
 
 	public bool isGrounded; //Check if player is touching the floor
 
+	public bool PlayerPaused = false;
+
 	void Awake () {
 		animator = GetComponent<Animator> ();
 		rb = GetComponent<Rigidbody2D> ();
+		transform.position = GameManager.Instance.CurrentCheckpointPos;
 
 		main_camera = GameObject.FindGameObjectWithTag ("MainCamera"); //Referencing to the Main_Camera object with a GameObject tag
 	}
 
 	void Update () {
 		//Player can move if he is alive and is not being hurt
-		if ((main_camera.GetComponent<PlayerManager> ().playerHealth > 0) && (!main_camera.GetComponent<PlayerManager> ().animator.GetCurrentAnimatorStateInfo (0).IsName ("Hurt"))) {
+		if ((GameManager.Instance.PlayerHealth > 0) && (!main_camera.GetComponent<PlayerManager> ().animator.GetCurrentAnimatorStateInfo (0).IsName ("Hurt"))) {
 			KeyboardInput ();
 		}
 
-		isGrounded = Physics2D.OverlapCircle (groundCheck.position, checkRadius, whatIsGround); //Check when player is touching the floor
+		if (!PlayerPaused) {
+			rb.gravityScale = 3;
 
-		if (isGrounded) {
-			hasJumped = false;
-			animator.SetBool ("playerJump", false);
+			isGrounded = Physics2D.OverlapCircle (groundCheck.position, checkRadius, whatIsGround); //Check when player is touching the floor
+
+			if (isGrounded) {
+				hasJumped = false;
+				animator.SetBool ("playerJump", false);
+			} else {
+				animator.SetBool ("playerJump", true);
+			}
+			if ((!facingRight && Speed > 0) || (facingRight && Speed < 0)) {
+				Flip ();
+			}
 		} else {
-			animator.SetBool ("playerJump", true);
-		}
-		if ((!facingRight && Speed > 0) || (facingRight && Speed < 0)) {
-			Flip ();
+			rb.gravityScale = 0;
+			rb.velocity = new Vector2 (0, 0);
 		}
 	}
 
 	void FixedUpdate () {
-		rb.velocity = new Vector2 (moveInput * Speed, rb.velocity.y); //Jump speed mechanic for smooth jump
+		if (!PlayerPaused) {
+			rb.velocity = new Vector2 (0, rb.velocity.y); //Jump speed mechanic for smooth jump
+		}
 	}
 
 	void KeyboardInput () {
 		if (Input.GetKey (KeyCode.A) || Input.GetKey (KeyCode.D)) {
-			animator.SetBool ("playerRun", true); //Plays the PlayerRun animation
-			this.transform.position += new Vector3 (Speed * Time.deltaTime, 0, 0); //Movement using speed value
+			if (!PlayerPaused) {
+				animator.SetBool ("playerRun", true); //Plays the PlayerRun animation
+				this.transform.position += new Vector3 (Speed * Time.deltaTime, 0, 0); //Movement using speed value
+			}
 		}
 		if (Input.GetKey (KeyCode.A)) {
-			Speed = -Math.Abs (Speed); //Sets Speed to the negative value of its absolute value (result is always negative)
+			if (!PlayerPaused) {
+				Speed = -Math.Abs (Speed); //Sets Speed to the negative value of its absolute value (result is always negative)
+			}
 		} else if (Input.GetKey (KeyCode.D)) {
-			Speed = Math.Abs (Speed); //Sets Speed to the positive value of its absolute value (result is always positive)
+			if (!PlayerPaused) {
+				Speed = Math.Abs (Speed); //Sets Speed to the positive value of its absolute value (result is always positive)
+			}
 		} else {
-			animator.SetBool ("playerRun", false); //Stops playing the PlayerRun animation
+			if (!PlayerPaused) {
+				animator.SetBool ("playerRun", false); //Stops playing the PlayerRun animation
+			}
 		}
 		if (Input.GetKeyDown (KeyCode.Space)) {
-			if (isGrounded) {
-				rb.velocity = Vector2.up * JumpForce; //Simple single jump mechanic
-			}
+			Jump ();
+		}
+	}
+
+	public void Jump () {
+		if (isGrounded) {
+			rb.velocity = Vector2.up * JumpForce; //Simple single jump mechanic
 		}
 	}
 

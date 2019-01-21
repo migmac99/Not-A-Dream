@@ -11,7 +11,6 @@ public class BoulderSpawn : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		State = "Fire";
-
 	}
 
 	// Reusable timer that will execute CODE_HERE after the timer is done --> used in fight timers and such
@@ -30,7 +29,7 @@ public class BoulderSpawn : MonoBehaviour {
 		}
 
 		if (State == "Fire") {
-			var Projectile_Instance = (GameObject) Instantiate (projectile, transform.position, Quaternion.identity);
+			//var Projectile_Instance = (GameObject) Instantiate (projectile, transform.position, Quaternion.identity);
 			State = "Load";
 		}
 	}

@@ -46,7 +46,7 @@ public class Parallax : MonoBehaviour {
 	}
 
 	private void ScrollLeft () {
-		int lastRight = rightImage;
+		//int lastRight = rightImage;
 		Layers[rightImage].position = new Vector3 (Layers[leftImage].position.x - backgroundSize, Layers[leftImage].position.y, 0); //Teleporting the rightmost image to the leftmost image position
 		leftImage = rightImage;
 		rightImage--;
@@ -56,7 +56,7 @@ public class Parallax : MonoBehaviour {
 	}
 
 	private void ScrollRight () {
-		int lastLeft = leftImage;
+		//int lastLeft = leftImage;
 		Layers[leftImage].position = new Vector3 (Layers[rightImage].position.x + backgroundSize, Layers[rightImage].position.y, 0); //Teleporting the leftmost image to the rightmost image position
 		rightImage = leftImage;
 		leftImage++;

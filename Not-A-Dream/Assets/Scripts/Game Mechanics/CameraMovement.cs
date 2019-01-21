@@ -20,6 +20,10 @@ public class CameraMovement : MonoBehaviour {
 
 	public float floorMargin; //Margin to adjust y axis on camera
 
+	void Start () {
+		transform.position = Player.transform.position;
+	}
+
 	void FixedUpdate () {
 		if ((Player.GetComponent<RunePowers> ().Rune_1_State == "Active") || (Player.GetComponent<Animator> ().GetAnimatorTransitionInfo (0).IsName ("Bubble_Pop -> playerJump")) || (Player.GetComponent<Animator> ().GetAnimatorTransitionInfo (0).IsName ("Bubble -> Bubble_Pop"))) {
 			//Math for smooth camera while in bubble state or during bubble pop animation

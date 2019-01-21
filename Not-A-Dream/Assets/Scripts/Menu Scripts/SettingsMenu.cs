@@ -75,7 +75,12 @@ public class SettingsMenu : MonoBehaviour {
 		}
 	}
 
-	void Update () {
+	void LateUpdate () {
+		if (Input.GetKeyDown (KeyCode.Escape)) {
+			if (settingsMenuUI.activeSelf) {
+				Back ();
+			}
+		}
 		//Debug.Log (GameManager.Instance.HealthBarEnabled);
 	}
 
@@ -83,6 +88,14 @@ public class SettingsMenu : MonoBehaviour {
 		//Debug.Log ("Loading Pause Menu...");
 		settingsMenuUI.SetActive (false);
 		backMenuUI.SetActive (true);
+	}
+
+	public void SetMasterVolume (float volume) {
+		GameManager.Instance.audioMixer.SetFloat ("Master_Volume", volume);
+	}
+
+	public void SetMusicVolume (float volume) {
+		GameManager.Instance.audioMixer.SetFloat ("Music_Volume", volume);
 	}
 
 	public void UI_Rune_OFF () {

@@ -1,10 +1,39 @@
 fileFormatVersion: 2
 guid: 91b1db98ac1f047428fe7f1031bdf312
-timeCreated: 1541872382
+timeCreated: 1547073940
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - rb: {instanceID: 0}
+  - Player: {instanceID: 0}
+  - main_camera: {instanceID: 0}
+  - Rune_1: {instanceID: 0}
+  - Rune_2: {instanceID: 0}
+  - Rune_3: {instanceID: 0}
+  - Rune_4: {instanceID: 0}
+  - Rune_5: {instanceID: 0}
+  - UI_Rune_Manager: {instanceID: 0}
+  - UI_Rune_Manager_Start_Pos: {instanceID: 0}
+  - UI_Rune_1: {instanceID: 0}
+  - UI_Rune_2: {instanceID: 0}
+  - UI_Rune_3: {instanceID: 0}
+  - UI_Rune_4: {instanceID: 0}
+  - UI_Rune_5: {instanceID: 0}
+  - UI_Text_Rune_1: {instanceID: 0}
+  - UI_Text_Rune_2: {instanceID: 0}
+  - UI_Text_Rune_3: {instanceID: 0}
+  - UI_Text_Rune_4: {instanceID: 0}
+  - UI_Text_Rune_5: {instanceID: 0}
+  - Cursor_FFF: {fileID: 2800000, guid: 4b58df439b91a0d4cbf589160855bb78, type: 3}
+  - Cursor_TFT: {fileID: 2800000, guid: dccfc499e51103146a894ae497047202, type: 3}
+  - Cursor_TFF: {fileID: 2800000, guid: 39fae146d133e154d8125dceca0898cd, type: 3}
+  - Cursor_TTF: {fileID: 2800000, guid: a5deff9939c7bc747b1660e223f315b4, type: 3}
+  - Cursor_TTT: {fileID: 2800000, guid: 0ee01858332cc4546a8b11766ea8860d, type: 3}
+  - Cursor_FTT: {fileID: 2800000, guid: 3b108d42d490dd945964edbb862ea55c, type: 3}
+  - Cursor_FFT: {fileID: 2800000, guid: 27c85a6203a4c45429019cd5de50c21f, type: 3}
+  - Cursor_FTF: {fileID: 2800000, guid: c0f601c67ed5ab84fbb31d093896736c, type: 3}
+  - Rune_2_Projectile: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -15,13 +15,19 @@ public class RuneFollowing : MonoBehaviour {
 	public float floorMargin; //Margin to adjust y axis
 	public float xOffset; //Offset to adjust x axis
 
-	public Boolean isCollected = false; //Boolean to see if the player has collected the rune or not, the rune will only follow the player after being collected
+	public int ThisRune;
 
 	public GameObject player;
 	private PlayerMovement playerMovement;
 
+	void Start () {
+		if (GameManager.Instance.UnlockedRune[ThisRune]) {
+			transform.position = player.transform.position;
+		}
+	}
+
 	void FixedUpdate () {
-		if (isCollected) {
+		if (GameManager.Instance.UnlockedRune[ThisRune]) {
 			if (player.GetComponent<PlayerMovement> ().Speed > 0) { //Setting the x offset to behind where the player is looking
 				xOffset = -Math.Abs (xOffset);
 			} else {
@@ -35,7 +41,7 @@ public class RuneFollowing : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D (Collider2D other) {
-		isCollected = true;
+		GameManager.Instance.UnlockedRune[ThisRune] = true;
 	}
 
 }

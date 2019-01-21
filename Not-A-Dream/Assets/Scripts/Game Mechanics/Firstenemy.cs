@@ -170,7 +170,7 @@ public class Firstenemy : MonoBehaviour {
 	public float enemySpeed; //Enemies speed
 	public float rayDistance; //Raycasts distance
 
-	private bool movingRight = true; //tells the character where to go when reaches the edge of the platform
+	//private bool movingRight = true; //tells the character where to go when reaches the edge of the platform
 
 	// Use this for initialization
 	void Awake () {
@@ -348,22 +348,31 @@ public class Firstenemy : MonoBehaviour {
 	}
 
 	void Attack_1 () {
+		// if (Attack_State == "In_Progress") {
+		// 	var Projectile_Instance = (GameObject) Instantiate (projectile, transform.position, Quaternion.identity); //Shoot a projectile from the enemies body with no rotation
+		// 	Projectile_Instance.GetComponent<Projectile> ().shooterID = "FirstEnemy";
+		// 	Projectile_Instance.GetComponent<Projectile> ().ProjectileDamage = Attack_1_damage;
+		// 	Projectile_Instance.GetComponent<Projectile> ().explode = true;
+		// 	timeBtwShots_1 = startTimeBtwShots_1;
+		// 	Attack_State = "Attack_Ghosts";
+		// }
+		// if (Attack_State == "Attack_Ghosts") {
+		// 	var Projectile_Instance = (GameObject) Instantiate (projectile, transform.position, Quaternion.identity); //Shoot a projectile from the enemies body with no rotation
+		// 	Projectile_Instance.GetComponent<Projectile> ().shooterID = "FirstEnemy";
+		// 	Projectile_Instance.GetComponent<Projectile> ().ProjectileDamage = 0;
+		// 	Projectile_Instance.GetComponent<Projectile> ().explode = false;
+		// 	timeBtwShots_1 = startTimeBtwShots_1;
+		// 	StartCoroutine (Countdown (ghost_creation_timer, () => { Attack_State = "Attack_Finish"; }));
+		//}
+
 		if (Attack_State == "In_Progress") {
 			var Projectile_Instance = (GameObject) Instantiate (projectile, transform.position, Quaternion.identity); //Shoot a projectile from the enemies body with no rotation
 			Projectile_Instance.GetComponent<Projectile> ().shooterID = "FirstEnemy";
 			Projectile_Instance.GetComponent<Projectile> ().ProjectileDamage = Attack_1_damage;
-			Projectile_Instance.GetComponent<Projectile> ().explode = true;
 			timeBtwShots_1 = startTimeBtwShots_1;
-			Attack_State = "Attack_Ghosts";
+			Attack_State = "Attack_Finish";
 		}
-		if (Attack_State == "Attack_Ghosts") {
-			var Projectile_Instance = (GameObject) Instantiate (projectile, transform.position, Quaternion.identity); //Shoot a projectile from the enemies body with no rotation
-			Projectile_Instance.GetComponent<Projectile> ().shooterID = "FirstEnemy";
-			Projectile_Instance.GetComponent<Projectile> ().ProjectileDamage = 0;
-			Projectile_Instance.GetComponent<Projectile> ().explode = false;
-			timeBtwShots_1 = startTimeBtwShots_1;
-			StartCoroutine (Countdown (ghost_creation_timer, () => { Attack_State = "Attack_Finish"; }));
-		}
+
 		if (Attack_State == "Attack_Finish") {
 			Fight_State = "";
 			Attack_State = "";

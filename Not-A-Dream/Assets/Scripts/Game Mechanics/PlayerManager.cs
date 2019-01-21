@@ -9,11 +9,10 @@ public class PlayerManager : MonoBehaviour {
     [HideInInspector]
     public Animator animator;
 
+    public GameObject MenuCanvas;
+
     public GameObject player;
     [Space (10)]
-    ///////////////////////////////Health///////////////////////////////
-    public float playerHealth;
-    [Space (5)]
     [Range (0, 20)] public int PassiveRegenValue;
     [Range (0, 5)] public int RegenEvery_x_Seconds;
     [Space (10)]
@@ -52,19 +51,19 @@ public class PlayerManager : MonoBehaviour {
     }
 
     public void TakeDamage (float ammount) {
-        if ((!invincible) && (playerHealth > 0)) {
-            playerHealth -= ammount;
+        if ((!invincible) && (GameManager.Instance.PlayerHealth > 0)) {
+            GameManager.Instance.PlayerHealth -= ammount;
             damaged = true;
         }
     }
 
     public void Regen (float ammount, bool repeat = false) {
-        if ((!PauseMenu.GameIsPaused) && (playerHealth > 0) && (playerHealth < 100)) {
-            playerHealth += ammount;
+        if ((!PauseMenu.GameIsPaused) && (GameManager.Instance.PlayerHealth > 0) && (GameManager.Instance.PlayerHealth < 100)) {
+            GameManager.Instance.PlayerHealth += ammount;
         }
         if (repeat) {
             StartCoroutine (Countdown (RegenEvery_x_Seconds, () => {
-                if ((!PauseMenu.GameIsPaused) || (playerHealth > 0) || (playerHealth < 100)) {
+                if ((!PauseMenu.GameIsPaused) || (GameManager.Instance.PlayerHealth > 0) || (GameManager.Instance.PlayerHealth < 100)) {
                     Regen (ammount, true);
                 } else {
                     Regen (0, true);
@@ -74,8 +73,8 @@ public class PlayerManager : MonoBehaviour {
     }
 
     void Player_Health () {
-        if (playerHealth > 100) {
-            playerHealth = 100;
+        if (GameManager.Instance.PlayerHealth > 100) {
+            GameManager.Instance.PlayerHealth = 100;
         }
 
         if (damaged) {
@@ -85,35 +84,36 @@ public class PlayerManager : MonoBehaviour {
         }
         damaged = false;
         ////////////////////////////////////////////////////////
-        if (playerHealth <= 60) {
+        if (GameManager.Instance.PlayerHealth <= 60) {
             currentColor = Health60SR.color;
             Health60SR.enabled = true;
             Health60SR.color = currentColor;
         }
-        if (playerHealth <= 30) {
+        if (GameManager.Instance.PlayerHealth <= 30) {
             currentColor = Health30SR.color;
             Health30SR.enabled = true;
         }
-        if (playerHealth <= 15) {
+        if (GameManager.Instance.PlayerHealth <= 15) {
             currentColor = Health15SR.color;
             Health15SR.enabled = true;
         }
-        if (playerHealth <= 0) {
+        if (GameManager.Instance.PlayerHealth <= 0) {
             animator.SetBool ("isPlayerAlive", false);
+            MenuCanvas.GetComponent<RespawnMenu> ().LoadRespawnMenu ();
         } else {
             animator.SetBool ("isPlayerAlive", true);
         }
         ////////////////////////////////////////////////////////
-        if (playerHealth >= 60) {
+        if (GameManager.Instance.PlayerHealth >= 60) {
             currentColor = Health60SR.color;
             Health60SR.enabled = false;
             Health60SR.color = currentColor;
         }
-        if (playerHealth >= 30) {
+        if (GameManager.Instance.PlayerHealth >= 30) {
             currentColor = Health30SR.color;
             Health30SR.enabled = false;
         }
-        if (playerHealth >= 15) {
+        if (GameManager.Instance.PlayerHealth >= 15) {
             currentColor = Health15SR.color;
             Health15SR.enabled = false;
         }

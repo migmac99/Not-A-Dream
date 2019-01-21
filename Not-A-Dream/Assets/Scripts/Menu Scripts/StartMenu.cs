@@ -9,19 +9,30 @@ public class StartMenu : MonoBehaviour {
 	[Space (10)]
 	public GameObject selectedMenuUI;
 	[Space (10)]
+	public GameObject tutorialMenuUI;
+	[Space (10)]
 	public GameObject settingsMenuUI;
+	[Space (10)]
+	public GameObject playMenuUI;
 
-	void Update () {
-
+	void Awake () {
+		selectedMenuUI.SetActive (true);
+		tutorialMenuUI.SetActive (false);
+		settingsMenuUI.SetActive (false);
+		playMenuUI.SetActive (false);
 	}
 
-	public void StartGame () {
-		//Debug.Log ("Loading Game...");
-		SceneManager.LoadScene ("not-a-dream");
+	public void LoadPlayMenu () {
+		selectedMenuUI.SetActive (false);
+		playMenuUI.SetActive (true);
+	}
+
+	public void LoadTutorialMenu () {
+		selectedMenuUI.SetActive (false);
+		tutorialMenuUI.SetActive (true);
 	}
 
 	public void LoadSettings () {
-		//Debug.Log ("Loading Settings...");
 		selectedMenuUI.SetActive (false);
 		settingsMenuUI.SetActive (true);
 	}
