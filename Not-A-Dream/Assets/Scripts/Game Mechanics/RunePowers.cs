@@ -70,7 +70,7 @@ public class RunePowers : MonoBehaviour {
 	public Texture2D Cursor_FTF;
 	[Space (10)]
 	private Vector2 hotSpot = Vector2.zero;
-	private CursorMode cursorMode = CursorMode.Auto;
+	private CursorMode cursorMode = CursorMode.ForceSoftware;
 	public bool Mouse_Right_Down;
 	public bool Mouse_Left_Down;
 
@@ -347,7 +347,7 @@ public class RunePowers : MonoBehaviour {
 			if ((Rune_1_State == "Ready") && (!Player.GetComponent<PlayerMovement> ().isGrounded) && (Player.GetComponent<PlayerMovement> ().hasJumped)) {
 				Rune_1_CurrentTime = Rune_1_Timeout;
 				Rune_1_State = "Active";
-				main_camera.GetComponent<PlayerManager> ().invincible = true;
+				//main_camera.GetComponent<PlayerManager> ().invincible = true;
 			}
 		}
 		if (Rune_1_State == "Active") { //Bubble going up
@@ -429,7 +429,7 @@ public class RunePowers : MonoBehaviour {
 		}
 
 		if (Rune_3_State == "In_Progress") {
-			main_camera.GetComponent<PlayerManager> ().invincible = true;
+			//main_camera.GetComponent<PlayerManager> ().invincible = true;
 
 			if (Player.GetComponent<PlayerMovement> ().facingRight) { //To know where to dogde to
 				//rb.AddForce (Vector3.forward * Rune_3_DodgeSpeed);
@@ -519,7 +519,7 @@ public class RunePowers : MonoBehaviour {
 		if (Rune_5_State == "In_Progress") {
 			main_camera.GetComponent<PlayerManager> ().invincible = true;
 			Rune_5_State = "Enabling";
-			StartCoroutine (Countdown (2f, () => { GetComponent<PlayerMovement> ().PlayerPaused = false; }));
+			StartCoroutine (Countdown (3.5f, () => { GetComponent<PlayerMovement> ().PlayerPaused = false; }));
 		}
 
 		if (Rune_5_State == "Enabling") {

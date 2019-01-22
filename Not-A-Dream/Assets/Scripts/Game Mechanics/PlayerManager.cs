@@ -13,10 +13,8 @@ public class PlayerManager : MonoBehaviour {
 
     public GameObject player;
     [Space (10)]
-    [Range (0, 20)] public int PassiveRegenValue;
-    [Range (0, 5)] public int RegenEvery_x_Seconds;
-    [Space (10)]
     public bool damaged;
+    [Space (10)]
     public bool invincible = false;
     [Space (20)]
     public GameObject Health60;
@@ -35,7 +33,7 @@ public class PlayerManager : MonoBehaviour {
 
         animator = player.GetComponent<Animator> ();
 
-        Regen (PassiveRegenValue, true); //This is the passive regen of the player
+        Regen (GameManager.Instance.PassiveRegenValue, true); //This is the passive regen of the player
     }
     // Update is called once per frame
     void Update () {
@@ -62,7 +60,7 @@ public class PlayerManager : MonoBehaviour {
             GameManager.Instance.PlayerHealth += ammount;
         }
         if (repeat) {
-            StartCoroutine (Countdown (RegenEvery_x_Seconds, () => {
+            StartCoroutine (Countdown (GameManager.Instance.RegenEvery_x_Seconds, () => {
                 if ((!PauseMenu.GameIsPaused) || (GameManager.Instance.PlayerHealth > 0) || (GameManager.Instance.PlayerHealth < 100)) {
                     Regen (ammount, true);
                 } else {

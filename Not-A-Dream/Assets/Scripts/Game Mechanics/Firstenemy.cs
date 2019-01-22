@@ -32,6 +32,8 @@ public class Firstenemy : MonoBehaviour {
 	public SpriteRenderer target_spriteRenderer;
 	[Space (10)]
 	public FadeOutGameObject _FadeOutGameObject;
+	[Space (20)]
+	public GameObject EnableOnDeath;
 
 	[Header ("╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════")]
 	[Space (20)]
@@ -503,7 +505,7 @@ public class Firstenemy : MonoBehaviour {
 			isDead = true;
 		} else {
 			//Replace 3f with time of death animation
-			StartCoroutine (Countdown (3f, () => { Destroy (gameObject); }));
+			StartCoroutine (Countdown (3f, () => { EnableOnDeath.SetActive (true); Destroy (gameObject); }));
 		}
 	}
 }

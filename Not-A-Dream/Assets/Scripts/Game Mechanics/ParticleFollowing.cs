@@ -28,7 +28,9 @@ public class ParticleFollowing : MonoBehaviour {
 
 	[Space (20)]
 
+	public bool Coliding;
 	public bool isPlatform;
+	public bool stopOnGoal;
 	public bool PlatformEnabled;
 	[Space (10)]
 	[Range (0, 10)]
@@ -80,11 +82,9 @@ public class ParticleFollowing : MonoBehaviour {
 					transform.position = new Vector3 (position_x, position_y, 0);
 				}
 			} else if ((isPlatform) && (!isRune_5) && (!FollowShape) && (!isMouse)) {
-				if (PlatformEnabled) {
-					transform.position = Vector3.MoveTowards (transform.position, PathToFollow.path_objs[CurrentWaypointID].position, platformSpeed * Time.deltaTime);
-
-					FollowDistance = Vector3.Distance (PathToFollow.path_objs[CurrentWaypointID].position, transform.position);
-
+				transform.position = Vector3.MoveTowards (transform.position, PathToFollow.path_objs[CurrentWaypointID].position, platformSpeed * Time.deltaTime);
+				FollowDistance = Vector3.Distance (PathToFollow.path_objs[CurrentWaypointID].position, transform.position);
+				if ((PlatformEnabled) && (!Coliding)) {
 					if (FollowDistance <= 0.01f) {
 						CurrentWaypointID++;
 					}
@@ -106,6 +106,10 @@ public class ParticleFollowing : MonoBehaviour {
 		if (other.gameObject.CompareTag ("Player")) {
 			if ((isPlatform) && (!isRune_5) && (!FollowShape) && (!isMouse)) {
 				other.collider.transform.SetParent (transform);
+				if (stopOnGoal) {
+					CurrentWaypointID = 0;
+					Coliding = true;
+				}
 			}
 		}
 	}
@@ -115,6 +119,7 @@ public class ParticleFollowing : MonoBehaviour {
 			if ((isPlatform) && (!isRune_5) && (!FollowShape) && (!isMouse)) {
 				other.collider.transform.SetParent (null);
 			}
+			Coliding = false;
 		}
 	}
 }

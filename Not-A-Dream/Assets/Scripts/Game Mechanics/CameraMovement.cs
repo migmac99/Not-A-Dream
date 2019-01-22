@@ -20,26 +20,32 @@ public class CameraMovement : MonoBehaviour {
 
 	public float floorMargin; //Margin to adjust y axis on camera
 
+	[Space (20)]
+
+	public bool DirectorMode;
+
 	void Start () {
 		transform.position = Player.transform.position;
 	}
 
 	void FixedUpdate () {
-		if ((Player.GetComponent<RunePowers> ().Rune_1_State == "Active") || (Player.GetComponent<Animator> ().GetAnimatorTransitionInfo (0).IsName ("Bubble_Pop -> playerJump")) || (Player.GetComponent<Animator> ().GetAnimatorTransitionInfo (0).IsName ("Bubble -> Bubble_Pop"))) {
-			//Math for smooth camera while in bubble state or during bubble pop animation
-			position_x = Mathf.SmoothDamp (transform.position.x, Player.transform.position.x, ref velocity.x, timer_x_Bubble);
-			position_y = Mathf.SmoothDamp (transform.position.y, Player.transform.position.y, ref velocity.y, timer_y_Bubble);
-			transform.position = new Vector3 (position_x, position_y, -1f);
-		} else {
-			//Math for smooth camera until it hits desired target
-			position_x = Mathf.SmoothDamp (transform.position.x, Player.transform.position.x, ref velocity.x, timer_x);
-			if (floor) {
-				position_y = Mathf.SmoothDamp (transform.position.y, (floor.transform.position.y + floorMargin), ref velocity.y, timer_y);
+		if (!DirectorMode) {
+			if ((Player.GetComponent<RunePowers> ().Rune_1_State == "Active") || (Player.GetComponent<Animator> ().GetAnimatorTransitionInfo (0).IsName ("Bubble_Pop -> playerJump")) || (Player.GetComponent<Animator> ().GetAnimatorTransitionInfo (0).IsName ("Bubble -> Bubble_Pop"))) {
+				//Math for smooth camera while in bubble state or during bubble pop animation
+				position_x = Mathf.SmoothDamp (transform.position.x, Player.transform.position.x, ref velocity.x, timer_x_Bubble);
+				position_y = Mathf.SmoothDamp (transform.position.y, Player.transform.position.y, ref velocity.y, timer_y_Bubble);
+				transform.position = new Vector3 (position_x, position_y, -1f);
+			} else {
+				//Math for smooth camera until it hits desired target
+				position_x = Mathf.SmoothDamp (transform.position.x, Player.transform.position.x, ref velocity.x, timer_x);
+				// if (floor) {
+				// 	position_y = Mathf.SmoothDamp (transform.position.y, (floor.transform.position.y + floorMargin), ref velocity.y, timer_y);
+				// }
+				position_y = Mathf.SmoothDamp (transform.position.y, (Player.transform.position.y + floorMargin), ref velocity.y, timer_y);
 				transform.position = new Vector3 (position_x, position_y, -1f);
 			}
+		} else {
 
-			//print("player " + Player);
-			//print("floor " + floor);
 		}
 	}
 

@@ -13,6 +13,7 @@ TagManager:
   - Arena_Wall_R
   - Arena_Wall
   - Projectile
+  - Explosion
   layers:
   - Default
   - TransparentFX

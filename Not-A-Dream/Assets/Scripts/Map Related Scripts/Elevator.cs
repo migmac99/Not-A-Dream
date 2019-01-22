@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,9 +13,23 @@ public class Elevator : MonoBehaviour {
 	public bool EnableCheckpoint;
 	public Vector2 SelectedCheckpoint;
 
+	public int ThisElevatorNum;
+
 	void Awake () {
 		animator = GetComponent<Animator> ();
 		isOpen = false;
+	}
+
+	void Start () {
+		GameManager.Instance.UnlockedElevator[ThisElevatorNum] = true;
+	}
+
+	// Reusable timer that will execute CODE_HERE after the timer is done --> used in fight timers and such
+	// This is creating a CoRoutine which runs independently of the function it is called from
+	// StartCoroutine (Countdown (3f, () => {CODE_HERE}));
+	IEnumerator Countdown (float seconds, Action onComplete) {
+		yield return new WaitForSecondsRealtime (seconds);
+		onComplete ();
 	}
 
 	void Update () {
@@ -31,7 +46,7 @@ public class Elevator : MonoBehaviour {
 	void OnTriggerEnter2D (Collider2D other) {
 		if (other.CompareTag ("Player")) {
 			animator.SetBool ("isOpen", true);
-			isOpen = true;
+			StartCoroutine (Countdown (0.75f, () => { isOpen = true; }));
 		}
 	}
 

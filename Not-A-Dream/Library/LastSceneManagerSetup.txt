@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/Tutorials/Bubble_Puzzle.unity
+- path: Assets/Scenes/Puzzles/Ultimate_Puzzle.unity
   isLoaded: 1
   isActive: 1

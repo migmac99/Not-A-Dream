@@ -18,12 +18,19 @@ public class Checkpoint : MonoBehaviour {
 		onComplete ();
 	}
 
+	void Awake () {
+		GetComponent<SpriteRenderer> ().color = GameManager.Instance.CheckpointColor;
+	}
+
 	void OnTriggerEnter2D (Collider2D other) {
+
 		if (other.CompareTag ("Player")) {
+			GetComponent<Animator> ().SetBool ("Active", true);
 			GameManager.Instance.CurrentCheckpointPos = transform.position;
 			if (AssignedArrowController != null) {
 				StartCoroutine (Countdown (SecondsBeforeArrowShown, () => { AssignedArrowController.GetComponent<ArrowControl> ().CheckpointAllow = true; }));
 			}
 		}
+
 	}
 }

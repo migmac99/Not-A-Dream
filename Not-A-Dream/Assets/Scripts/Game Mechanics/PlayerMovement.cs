@@ -28,11 +28,16 @@ public class PlayerMovement : MonoBehaviour {
 
 	public bool PlayerPaused = false;
 
-	void Awake () {
+	public bool Tutorial;
+
+	void Start () {
 		animator = GetComponent<Animator> ();
 		rb = GetComponent<Rigidbody2D> ();
-		transform.position = GameManager.Instance.CurrentCheckpointPos;
-
+		if (Tutorial) {
+			transform.position = GameManager.Instance.TutorialCheckpointPos;
+		} else {
+			transform.position = GameManager.Instance.CurrentCheckpointPos;
+		}
 		main_camera = GameObject.FindGameObjectWithTag ("MainCamera"); //Referencing to the Main_Camera object with a GameObject tag
 	}
 

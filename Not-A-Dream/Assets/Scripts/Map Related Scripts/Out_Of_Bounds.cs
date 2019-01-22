@@ -14,5 +14,10 @@ public class Out_Of_Bounds : MonoBehaviour {
 			} else
 				other.transform.position = GameManager.Instance.CurrentCheckpointPos;
 		}
+		other.GetComponent<RunePowers> ().Rune_1_CurrentTime = 0;
+		other.GetComponent<RunePowers> ().Rune_2_CurrentTime = 0;
+		other.GetComponent<RunePowers> ().Rune_3_CurrentTime = 0;
+		other.GetComponent<RunePowers> ().Rune_4_CurrentTime = 0;
+		other.GetComponent<RunePowers> ().Rune_5_CurrentTime = 0;
 	}
 }

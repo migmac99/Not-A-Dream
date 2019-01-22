@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class RespawnMenu : MonoBehaviour {
 
-	public string RespawnScene;
 	public GameObject respawnMenuUI;
 
 	public void Awake () {
@@ -18,7 +17,7 @@ public class RespawnMenu : MonoBehaviour {
 
 	public void Respawn () {
 		Time.timeScale = 1f;
-		SceneManager.LoadScene (RespawnScene);
+		SceneManager.LoadScene (GameManager.Instance.CurrentScene);
 		respawnMenuUI.SetActive (false);
 		GameManager.Instance.PlayerHealth = 100;
 	}
