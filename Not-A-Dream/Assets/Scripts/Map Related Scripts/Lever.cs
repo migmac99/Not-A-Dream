@@ -15,10 +15,17 @@ public class Lever : MonoBehaviour {
 	[Range (0, 20)]
 	public int leverTimer;
 	private bool Disable;
+	[Space (20)]
+	public GameObject main_camera;
+	[Space (10)]
+	public Path_Manager DesiredDirectorPath;
+	[Space (10)]
+	private bool hasRun = false;
 
 	void Awake () {
 		animator = GetComponent<Animator> ();
 		Disable = false;
+		hasRun = false;
 	}
 
 	// Reusable timer that will execute CODE_HERE after the timer is done --> used in fight timers and such
@@ -39,6 +46,7 @@ public class Lever : MonoBehaviour {
 			for (int a = 0; a < transform.childCount; a++) {
 				if (LeverStatus) {
 					transform.GetChild (a).gameObject.SetActive (false);
+					Director ();
 				} else {
 					transform.GetChild (a).gameObject.SetActive (true);
 				}
@@ -48,6 +56,7 @@ public class Lever : MonoBehaviour {
 		if (TargetMode == "Enable_Platform") {
 			if (LeverStatus) {
 				SelectedPlatform.GetComponent<ParticleFollowing> ().PlatformEnabled = true;
+				Director ();
 			} else {
 				SelectedPlatform.GetComponent<ParticleFollowing> ().PlatformEnabled = false;
 			}
@@ -66,6 +75,16 @@ public class Lever : MonoBehaviour {
 			if ((other.CompareTag ("Player")) && (leverTimer != 0)) {
 				Disable = true;
 			}
+		}
+	}
+
+	void Director () {
+		if (!hasRun) {
+			main_camera.GetComponent<CameraMovement> ().Player.GetComponent<PlayerMovement> ().PlayerPaused = true;
+			main_camera.GetComponent<CameraMovement> ().DirectorPath = DesiredDirectorPath;
+			main_camera.GetComponent<CameraMovement> ().DirectorMode = true;
+			StartCoroutine (Countdown (GameManager.Instance.DirectorCutTime * DesiredDirectorPath.path_objs.Count, () => { main_camera.GetComponent<CameraMovement> ().DirectorMode = false; main_camera.GetComponent<CameraMovement> ().Player.GetComponent<PlayerMovement> ().PlayerPaused = false; }));
+			hasRun = true;
 		}
 	}
 }

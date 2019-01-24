@@ -21,7 +21,9 @@ public class Elevator : MonoBehaviour {
 	}
 
 	void Start () {
-		GameManager.Instance.UnlockedElevator[ThisElevatorNum] = true;
+		if (ThisElevatorNum != 0) {
+			GameManager.Instance.UnlockedElevator[ThisElevatorNum] = true;
+		}
 	}
 
 	// Reusable timer that will execute CODE_HERE after the timer is done --> used in fight timers and such
@@ -36,8 +38,8 @@ public class Elevator : MonoBehaviour {
 		if ((isOpen) && (Input.GetKey (KeyCode.W))) {
 			//SceneManager.LoadScene ("not-a-dream");
 			SceneManager.LoadScene (SelectedSceneString);
-			GameManager.Instance.CurrentScene = SelectedSceneString;
 			if (EnableCheckpoint) {
+				GameManager.Instance.CurrentScene = SelectedSceneString;
 				GameManager.Instance.CurrentCheckpointPos = SelectedCheckpoint;
 			}
 		}

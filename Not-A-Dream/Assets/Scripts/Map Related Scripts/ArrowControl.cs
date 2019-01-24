@@ -11,11 +11,11 @@ public class ArrowControl : MonoBehaviour {
 	}
 
 	void Start () {
-		for (int a = 0; a < transform.childCount; a++) {
-			for (int b = 0; b < transform.childCount; b++) {
-				transform.GetChild (a).GetChild (b).gameObject.SetActive (false);
-			}
-		}
+		// for (int a = 0; a < transform.childCount; a++) {
+		// 	for (int b = 0; b < transform.childCount; b++) {
+		// 		transform.GetChild (a).GetChild (b).gameObject.SetActive (false);
+		// 	}
+		// }
 	}
 
 	void Update () {

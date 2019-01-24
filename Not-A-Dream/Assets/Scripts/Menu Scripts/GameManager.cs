@@ -28,10 +28,16 @@ public class GameManager : Singleton<GameManager> {
 
 	[SerializeField][Range (0, 5)] public int RegenEvery_x_Seconds;
 
+	[SerializeField] public float DirectorCutTime;
+
+	[SerializeField] public float DirectorCameraSpeed;
+
+	[SerializeField] public bool FullScreen;
+
 	[SerializeField] public AudioMixer audioMixer;
 
 	[SerializeField] public Texture2D Cursor_FFF;
-	private Vector2 hotSpot = Vector2.zero;
+	private Vector2 hotSpot;
 
 	[Space (10)]
 	//[SerializeField] public GameObject InitialSpawnPosition;
@@ -40,6 +46,8 @@ public class GameManager : Singleton<GameManager> {
 	[SerializeField] public Vector2 TutorialCheckpointPos;
 
 	protected virtual void Start () {
+		Screen.fullScreen = true;
+
 		UnlockedRune = new bool[6]; //this because array starts on [0] and not [1] ([0] is not being used)
 		SceneManager.LoadScene ("StartMenu");
 

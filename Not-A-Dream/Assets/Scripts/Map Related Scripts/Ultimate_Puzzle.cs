@@ -8,15 +8,20 @@ public class Ultimate_Puzzle : MonoBehaviour {
 	public GameObject doorClose;
 	public GameObject doorOpen;
 	public GameObject lights;
-//	private Animator animator;
+	//	private Animator animator;
 	public bool doorState = false;
 	public bool leftTrigger = true;
 	Light lights_Light;
 
+	[Space (20)]
+	public GameObject main_camera;
+	[Space (10)]
+	public Path_Manager DesiredDirectorPath;
+
 	// Use this for initialization
 	void Start () {
-	//	animator = GetComponent<Animator> ();
-	lights_Light = lights.GetComponent<Light>();
+		//	animator = GetComponent<Animator> ();
+		lights_Light = lights.GetComponent<Light> ();
 	}
 
 	// Update is called once per frame
@@ -30,17 +35,17 @@ public class Ultimate_Puzzle : MonoBehaviour {
 			lights_Light.intensity = 0.25f;
 			doorClose.SetActive (false);
 			doorOpen.SetActive (true);
-			StartCoroutine (Countdown (0.1f, () => { doorState = false; }));
-		//	StartCoroutine (Countdown (0.1f, () => { animator.SetBool ("On", false); }));
-
+			StartCoroutine (Countdown (0.1f, () => { doorState = false; Director (); }));
+			//	StartCoroutine (Countdown (0.1f, () => { animator.SetBool ("On", false); }));
 		}
 		if ((other.CompareTag ("Explosion")) && (!doorState)) {
-		//	animator.SetBool ("On", true);
+			//	animator.SetBool ("On", true);
 			lights_Light.intensity = 2f;
 			doorClose.SetActive (true);
 			doorOpen.SetActive (false);
 			doorState = true;
 			leftTrigger = false;
+			Director ();
 		}
 
 	}
@@ -51,4 +56,10 @@ public class Ultimate_Puzzle : MonoBehaviour {
 		}
 	}
 
+	void Director () {
+		main_camera.GetComponent<CameraMovement> ().Player.GetComponent<PlayerMovement> ().PlayerPaused = true;
+		main_camera.GetComponent<CameraMovement> ().DirectorPath = DesiredDirectorPath;
+		main_camera.GetComponent<CameraMovement> ().DirectorMode = true;
+		StartCoroutine (Countdown (GameManager.Instance.DirectorCutTime * DesiredDirectorPath.path_objs.Count, () => { main_camera.GetComponent<CameraMovement> ().DirectorMode = false; }));
+	}
 }
